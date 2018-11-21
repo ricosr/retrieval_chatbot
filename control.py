@@ -19,7 +19,7 @@ class Agent:
         self.init_all_states()
 
     def init_all_states(self):
-        self.retrieval = Retrieval(num_ir=10)
+        self.retrieval = Retrieval(num_ir=10, config=self.config)
         self.tf_idf = TfIdf(MODEL_PATH)
 
     def get_utterance_type(self, utterance):    # TODO get correct file name by utterance
@@ -30,7 +30,7 @@ class Agent:
             utterance = input(">>>")
             file_name = self.get_utterance_type(utterance)
             index_path = self.config[file_name]
-            self.retrieval.load_index(index_path)
+            self.retrieval.read_indexes(index_path)
             context_ls = self.retrieval.search_sentences(utterance, file_name)
             self.tf_idf.calculate_tfidf(utterance, context_ls)
             best_index = self.tf_idf.calculate_distances()
