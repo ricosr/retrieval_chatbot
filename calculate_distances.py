@@ -3,13 +3,18 @@
 import sklearn
 
 
-class IfIdf:
-    def __init__(self, utterances, contexts):
+class TfIdf:
+    def __init__(self, model_path):
+        self.load_models(model_path)
+        pass
+
+    def load_models(self, model_path):
         pass
 
     def calculate_distances(self):
-        pass
+        best_index = ''
+        return best_index
 
-    def calculate_ifidf(self):
+    def calculate_tfidf(self, utterances, contexts):
         pass
 

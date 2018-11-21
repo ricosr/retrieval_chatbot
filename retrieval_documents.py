@@ -12,8 +12,9 @@ class Retrieval:
     def load_documents(self):
         pass
 
-    def search_sentences(self, utterances):
-        pass
+    def search_sentences(self, utterance):
+        context_ls = []
+        return context_ls
 
     def add_indexes(self):
         pass
