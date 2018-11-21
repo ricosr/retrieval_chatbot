@@ -1,3 +1,3 @@
 
 # {path: filename}
-index_dict = {"/temp": "tmp"}
+index_dict = {"tmp": "index/temp"}

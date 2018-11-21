@@ -29,9 +29,9 @@ class Agent:
         while True:
             utterance = input(">>>")
             file_name = self.get_utterance_type(utterance)
-            index_path = self.config[file_name]
-            self.retrieval.read_indexes(index_path)
-            context_ls = self.retrieval.search_sentences(utterance, file_name)
+            # index_path = self.config[file_name]
+            self.retrieval.read_indexes(file_name)
+            context_ls = self.retrieval.search_sentences(utterance)
             self.tf_idf.calculate_tfidf(utterance, context_ls)
             best_index = self.tf_idf.calculate_distances()
             print("<<<{}".format(context_ls[best_index]))
