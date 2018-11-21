@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# chinese computing project
+# members: Mo Feiyu, Sun Rui, Wang Zizhe, copyright
+
 from retrieval_documents import Retrieval
 from calculate_distances import TfIdf
 

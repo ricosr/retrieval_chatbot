@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# chinese computing project
+# members: Mo Feiyu, Sun Rui, Wang Zizhe, copyright
+
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
