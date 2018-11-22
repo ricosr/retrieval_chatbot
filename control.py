@@ -20,10 +20,10 @@ class Agent:
 
     def init_all_states(self):
         self.retrieval = Retrieval(num_ir=10, config=self.config)
-        self.tf_idf = TfIdf(MODEL_PATH)
+        self.tf_idf = TfIdf(config)
 
     def get_utterance_type(self, utterance):    # TODO get correct file name by utterance
-        return "tmp"    # return file_name
+        return "AI"    # return file_name
 
     def start(self):
         while True:
@@ -35,7 +35,8 @@ class Agent:
             best_index = fuzzy_matching(utterance, context_ls)
 
             # TODO tf-idf
-            # self.tf_idf.calculate_tfidf(utterance, context_ls)
+            # self.tf_idf.select_model(file_name)
+            # self.tf_idf.predict_tfidf(utterance, context_ls)
             # best_index = self.tf_idf.calculate_distances()
             print("<<<{}".format(context_ls[best_index][1]))
 

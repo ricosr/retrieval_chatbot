@@ -5,6 +5,6 @@
 # two dictionary has same keys corresponding the pickle files and searching indexes
 index_dict = {"AI": "index/AI"}
 file_dict = {"AI": "data/AI.pkl"}
-model_dict = {"AI": "data/AI.pkl"}
+model_dict = {"AI": "model/AI.pkl"}
 
 
