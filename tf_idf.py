@@ -31,10 +31,12 @@ class TfIdf:
             self.vector_utterrance_ls.append(self.current_model.transform([utterances + each_context[1]]))
 
     def calculate_distances(self):
-        resutl_ls = []
+        result_ls = []
         for tfidf_c, tfidf_u in zip(self.vector_context_ls, self.vector_utterrance_ls):
-            resutl_ls.append(np.dot(tfidf_c, tfidf_u.T).todense())
-        return resutl_ls
+            result_ls.append(np.dot(tfidf_c, tfidf_u.T).todense())
+        self.vector_utterrance_ls.clear()
+        self.vector_context_ls.clear()
+        return result_ls
 
 
 class TrainTfIdf:

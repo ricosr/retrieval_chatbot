@@ -7,6 +7,7 @@ import pickle
 import yaml
 
 from retrieval_documents import BuildIndex
+from tf_idf import TrainTfIdf
 import config
 
 
@@ -15,6 +16,11 @@ def add_index():
     build_index = BuildIndex(config)
     build_index.load_pickle()
     build_index.build_index()
+
+def train_tf_idf():
+    tf_idf = TrainTfIdf(config)
+
+
 
 def yml_to_pickle():
     with open("file/chinese/ai.yml", 'r', encoding='utf-8') as fp:
