@@ -6,7 +6,7 @@
 from retrieval_documents import Retrieval
 from fuzzy_match import fuzzy_matching
 from calculate_distances import TfIdf
-from config import index_dict
+import config
 
 # TODO: distribute message by threading or tornado
 
@@ -16,7 +16,7 @@ MODEL_PATH = []
 
 class Agent:
     def __init__(self):
-        self.config = index_dict
+        self.config = config
         self.init_all_states()
 
     def init_all_states(self):

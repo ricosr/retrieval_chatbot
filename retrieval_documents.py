@@ -4,6 +4,7 @@
 # Copyright (c) 2018 by Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 import pickle
+import os
 
 from whoosh.fields import *
 from whoosh.qparser import QueryParser
@@ -21,7 +22,9 @@ class Retrieval:
         self.load_index()
 
     def load_index(self):
-        for file_name, file_path in self.config.index_dict:
+        # print(self.config.index_dict)
+        for file_name, file_path in self.config.index_dict.items():
+            # print(file_path,"**************************")
             self.index_dict[file_name] = open_dir(file_path)
 
     def read_indexes(self, file_name):
@@ -51,7 +54,7 @@ class BuildIndex:
     #             self.files_dict[file_name] = fp.readlines()
 
     def load_pickle(self):
-        for file_name, path in self.config.file_dict.item():
+        for file_name, path in self.config.file_dict.items():
             with open(path, 'rb') as fp:
                 self.files_dict[file_name] = pickle.load(fp)
 
@@ -59,16 +62,19 @@ class BuildIndex:
         index_config = self.config.index_dict
         analyzer = ChineseAnalyzer()
         schema = Schema(title=TEXT(stored=True), path=ID(stored=True), content=TEXT(stored=True, analyzer=analyzer))
-        try:
-            for file_name, content in self.files_dict.items():    # content:[[question], [answer]]
-                for i in range(len(content)):
-                    index_path = index_config[file_name]
-                    tmp_index = create_in(index_path, schema)
-                    writer = tmp_index.writer()
-                    writer.add_document(
-                        title=content[i][1].strip(),
-                        path="/{}".format(str(i)),
-                        content=content[i][0].strip()
-                    )
-        except Exception as e:
-            print(e)
+        # try:
+        for file_name, content in self.files_dict.items():    # content:[[question], [answer]]
+            index_path = index_config[file_name]
+            if not os.path.exists(index_path):
+                os.mkdir(index_path)
+            tmp_index = create_in(index_path, schema)
+            writer = tmp_index.writer()
+            for i in range(len(content)):
+                writer.add_document(
+                    title=content[i][1].strip(),
+                    path="/{}".format(str(i)),
+                    content=content[i][0].strip()
+                )
+            writer.commit()
+        # except Exception as e:
+        #     print(e)

@@ -23,4 +23,4 @@ def yml_to_pickle():
     with open("data/{}.pkl".format(data["categories"][0]), 'wb') as fpw:
         pickle.dump(data["conversations"], fpw)
 
-yml_to_pickle()
+add_index()
