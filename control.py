@@ -20,7 +20,7 @@ class Agent:
 
     def init_all_states(self):
         self.retrieval = Retrieval(num_ir=10, config=self.config)
-        self.tf_idf = TfIdf(config)
+        # self.tf_idf = TfIdf(config)
 
     def get_utterance_type(self, utterance):    # TODO get correct file name by utterance
         return "AI"    # return file_name
@@ -33,6 +33,7 @@ class Agent:
             self.retrieval.read_indexes(file_name)
             context_ls = self.retrieval.search_sentences(utterance)
             best_index = fuzzy_matching(utterance, context_ls)
+            print(best_index)
 
             # TODO tf-idf
             # self.tf_idf.select_model(file_name)
@@ -42,3 +43,4 @@ class Agent:
 
 if __name__ == '__main__':
     agent = Agent()
+    agent.start()
