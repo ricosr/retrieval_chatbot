@@ -19,14 +19,13 @@ def add_index():
 
 def train_tf_idf():
     tf_idf = TrainTfIdf(config)
-
-
+    tf_idf.load_pickle()
+    tf_idf.train()
 
 def yml_to_pickle():
     with open("file/chinese/ai.yml", 'r', encoding='utf-8') as fp:
         data = yaml.load(fp)
-    print(data)
     with open("data/{}.pkl".format(data["categories"][0]), 'wb') as fpw:
         pickle.dump(data["conversations"], fpw)
 
-add_index()
+train_tf_idf()
