@@ -3,7 +3,7 @@
 # chinese computing project
 # members: Mo Feiyu, Sun Rui, Wang Zizhe, copyright
 
-import os.path
+import pickle
 
 from whoosh.fields import *
 from whoosh.qparser import QueryParser
@@ -12,26 +12,10 @@ from jieba.analyse.analyzer import ChineseAnalyzer
 import jieba
 
 
-# class Retrieval:
-#     def __init__(self, num_ir=10, documents_dict=None):
-#         self.num_ir = num_ir
-#         self.documents_dict = documents_dict
-#         self.files_dict = {}
-#         self.load_index()
-
-    # def load_documents(self):
-    #     for file_name, path in self.documents_dict.items():
-    #         with open(path, 'r') as f:
-    #             self.files_dict[file_name] = f.readlines()
-    #
-    # def add_indexes(self):
-    #     pass
-
 class Retrieval:
     def __init__(self, num_ir=10, config=None):
         self.num_ir = num_ir
         self.config = config
-        # self.files_dict = {}
         self.current_index = None
         self.index_dict = {}
         self.load_index()
@@ -57,14 +41,30 @@ class BuildIndex:
         self.config = config
         self.files_dict = {}
 
-    def load_documents(self):
-        for file_name, path in self.config.file_dict.items():
-            with open(path, 'r') as f:
-                self.files_dict[file_name] = f.readlines()
+    # def load_documents(self):
+    #     for file_name, path in self.config.file_dict.items():
+    #         with open(path, 'r') as fp:
+    #             self.files_dict[file_name] = fp.readlines()
+
+    def load_pickle(self):
+        for file_name, path in self.config.file_dict.item():
+            with open(path, 'rb') as fp:
+                self.files_dict[file_name] = pickle.load(fp)
 
     def build_index(self):
+        index_config = self.config.index_dict
         analyzer = ChineseAnalyzer()
         schema = Schema(title=TEXT(stored=True), path=ID(stored=True), content=TEXT(stored=True, analyzer=analyzer))
-        for file, content in self.files_dict.items():
-            # TODO !!!!!
-            ix = create_in("tmp", schema) # for create new index
+        try:
+            for file_name, content in self.files_dict.items():
+                for each_conversation in content:
+                    index_path = index_config[file_name]
+                    tmp_index = create_in(index_path, schema)
+                    writer = tmp_index.writer()
+                    writer.add_document(
+                        title="document1",
+                        path="/a",
+                        content=each_conversation[0] + each_conversation[1]
+                    )
+        except Exception as e:
+            print(e)
