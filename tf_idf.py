@@ -4,10 +4,11 @@
 # Copyright (c) 2018 by Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 import pickle
-import numpy as np
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.externals import joblib
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
 
 
 class TfIdf:
@@ -33,10 +34,15 @@ class TfIdf:
     def calculate_distances(self):
         result_ls = []
         for tfidf_c, tfidf_u in zip(self.vector_context_ls, self.vector_utterrance_ls):
-            result_ls.append(np.dot(tfidf_c, tfidf_u.T).todense())
+            result_ls.append(self.calculate_cos_similarity(tfidf_c, tfidf_u).todense())
         self.vector_utterrance_ls.clear()
         self.vector_context_ls.clear()
         return result_ls
+
+    def calculate_cos_similarity(self, x, y):  # TODO: not be sure type of x and y
+        x = x.reshape(1, -1)
+        y = y.reshape(1, -1)
+        return cosine_similarity(x, y)
 
 
 class TrainTfIdf:
