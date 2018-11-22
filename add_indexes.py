@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # chinese computing project
-# members: Mo Feiyu, Sun Rui, Wang Zizhe, copyright
+# Copyright (c) by Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 
 # pickle file of conversations must exist, config.file_dict and config.index_dict must be right
