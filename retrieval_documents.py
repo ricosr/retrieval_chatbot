@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # chinese computing project
-# Copyright (c) by Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
+# Copyright (c) 2018 by Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 import pickle
 
@@ -33,8 +33,12 @@ class Retrieval:
         with self.current_index.searcher() as searcher:
             for each_seg in seg_list:
                 query = QueryParser("content", self.current_index.schema).parse(each_seg)
-                result_ls.append(searcher.search(query, limit=self.num_ir))
-        return list(set(result_ls))
+                results = searcher.search(query, limit=self.num_ir)
+                for hit in results:
+                    result_ls.append([hit["content"], hit["title"]])
+        return list(set(result_ls))    # TODO: need to improve
+
+    # def read_pickle
 
 class BuildIndex:
     def __init__(self, config):
@@ -56,15 +60,15 @@ class BuildIndex:
         analyzer = ChineseAnalyzer()
         schema = Schema(title=TEXT(stored=True), path=ID(stored=True), content=TEXT(stored=True, analyzer=analyzer))
         try:
-            for file_name, content in self.files_dict.items():
+            for file_name, content in self.files_dict.items():    # content:[[question], [answer]]
                 for i in range(len(content)):
                     index_path = index_config[file_name]
                     tmp_index = create_in(index_path, schema)
                     writer = tmp_index.writer()
                     writer.add_document(
-                        title=file_name,
+                        title=content[i][1].strip(),
                         path="/{}".format(str(i)),
-                        content=content[i][0] + content[i][1]
+                        content=content[i][0].strip()
                     )
         except Exception as e:
             print(e)

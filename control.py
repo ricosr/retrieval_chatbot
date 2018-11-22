@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # chinese computing project
-# Copyright (c) by Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
+# Copyright (c) by 2018 Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 from retrieval_documents import Retrieval
 from calculate_distances import TfIdf
@@ -32,8 +32,12 @@ class Agent:
             # index_path = self.config[file_name]
             self.retrieval.read_indexes(file_name)
             context_ls = self.retrieval.search_sentences(utterance)
-            self.tf_idf.calculate_tfidf(utterance, context_ls)
-            best_index = self.tf_idf.calculate_distances()
+
+
+
+            # TODO tf-idf
+            # self.tf_idf.calculate_tfidf(utterance, context_ls)
+            # best_index = self.tf_idf.calculate_distances()
             print("<<<{}".format(context_ls[best_index]))
 
 if __name__ == '__main__':

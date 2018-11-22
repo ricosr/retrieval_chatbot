@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # chinese computing project
-# members: Mo Feiyu, Sun Rui, Wang Zizhe, copyright
+# Copyright (c) 2018 by Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 import pandas as pd
 import numpy as np
