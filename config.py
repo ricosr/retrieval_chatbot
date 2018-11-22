@@ -1,4 +1,7 @@
 
-# {path: filename}
-index_dict = {"tmp": "index/temp"}
-file_dict = {"tmp": "file/temp.txt"}
+# two dictionary has same keys corresponding the pickle files and searching indexes
+
+index_dict = {"tmp": "index/tmp"}
+file_dict = {"tmp": "file/tmp.pickle"}
+
+

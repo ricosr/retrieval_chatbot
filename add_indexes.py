@@ -4,10 +4,12 @@
 # members: Mo Feiyu, Sun Rui, Wang Zizhe, copyright
 
 
-from retrieval_documents import Retrieval
+# pickle file of conversations must exist, config.file_dict and config.index_dict must be right
 
 
-retrieval = Retrieval()
-retrieval.load_documents()
-retrieval.add_indexes()
+from retrieval_documents import BuildIndex
+import config
 
+build_index = BuildIndex(config)
+build_index.load_pickle()
+build_index.build_index()

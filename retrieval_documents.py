@@ -57,14 +57,14 @@ class BuildIndex:
         schema = Schema(title=TEXT(stored=True), path=ID(stored=True), content=TEXT(stored=True, analyzer=analyzer))
         try:
             for file_name, content in self.files_dict.items():
-                for each_conversation in content:
+                for i in range(len(content)):
                     index_path = index_config[file_name]
                     tmp_index = create_in(index_path, schema)
                     writer = tmp_index.writer()
                     writer.add_document(
-                        title="document1",
-                        path="/a",
-                        content=each_conversation[0] + each_conversation[1]
+                        title=file_name,
+                        path="/{}".format(str(i)),
+                        content=content[i][0] + content[i][1]
                     )
         except Exception as e:
             print(e)
