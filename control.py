@@ -20,7 +20,7 @@ class Agent:
 
     def init_all_states(self):
         self.retrieval = Retrieval(num_ir=10, config=self.config)
-        self.tf_idf = TfIdf(config)
+        # self.tf_idf = TfIdf(config)
 
     def get_utterance_type(self, utterance):    # TODO get correct file name by utterance
         return "AI"    # return file_name
@@ -36,9 +36,9 @@ class Agent:
             print(best_index)
 
             # TODO tf-idf
-            self.tf_idf.select_model(file_name)
-            self.tf_idf.predict_tfidf(utterance, context_ls)
-            best_index = self.tf_idf.calculate_distances()
+            # self.tf_idf.select_model(file_name)
+            # self.tf_idf.predict_tfidf(utterance, context_ls)
+            # best_index = self.tf_idf.calculate_distances()
             print("<<<{}".format(context_ls[best_index][1]))
 
 if __name__ == '__main__':

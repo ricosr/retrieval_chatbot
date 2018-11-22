@@ -37,7 +37,8 @@ class Retrieval:
                 results = searcher.search(query, limit=self.num_ir)
                 for hit in results:
                     result_ls.append([hit["content"], hit["title"]])
-        return list(set(result_ls))    # TODO: need to improve
+        tmp_result_ls = [(each_content[0], each_content[1]) for each_content in result_ls]
+        return list(set(tmp_result_ls))    # TODO: need to improve
 
     # def read_pickle
 
