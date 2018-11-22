@@ -4,6 +4,7 @@
 # Copyright (c) by 2018 Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 from retrieval_documents import Retrieval
+from fuzzy_match import fuzzy_matching
 from calculate_distances import TfIdf
 from config import index_dict
 
@@ -32,13 +33,12 @@ class Agent:
             # index_path = self.config[file_name]
             self.retrieval.read_indexes(file_name)
             context_ls = self.retrieval.search_sentences(utterance)
-
-
+            best_index = fuzzy_matching(utterance, context_ls)
 
             # TODO tf-idf
             # self.tf_idf.calculate_tfidf(utterance, context_ls)
             # best_index = self.tf_idf.calculate_distances()
-            print("<<<{}".format(context_ls[best_index]))
+            print("<<<{}".format(context_ls[best_index][1]))
 
 if __name__ == '__main__':
     agent = Agent()
