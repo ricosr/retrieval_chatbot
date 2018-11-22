@@ -22,9 +22,7 @@ class Retrieval:
         self.load_index()
 
     def load_index(self):
-        # print(self.config.index_dict)
         for file_name, file_path in self.config.index_dict.items():
-            # print(file_path,"**************************")
             self.index_dict[file_name] = open_dir(file_path)
 
     def read_indexes(self, file_name):
@@ -47,11 +45,6 @@ class BuildIndex:
     def __init__(self, config):
         self.config = config
         self.files_dict = {}
-
-    # def load_documents(self):
-    #     for file_name, path in self.config.file_dict.items():
-    #         with open(path, 'r') as fp:
-    #             self.files_dict[file_name] = fp.readlines()
 
     def load_pickle(self):
         for file_name, path in self.config.file_dict.items():

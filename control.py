@@ -5,13 +5,12 @@
 
 from retrieval_documents import Retrieval
 from fuzzy_match import fuzzy_matching
-from calculate_distances import TfIdf
+from tf_idf import TfIdf
 import config
 
 # TODO: distribute message by threading or tornado
 
 NUM_OF_IR = 10
-DOCUMENTS_PATH = {}
 MODEL_PATH = []
 
 class Agent:
