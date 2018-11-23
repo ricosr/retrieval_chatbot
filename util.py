@@ -22,10 +22,9 @@ def train_tf_idf():
     tf_idf.load_pickle()
     tf_idf.train()
 
-def yml_to_pickle():
-    with open("file/chinese/ai.yml", 'r', encoding='utf-8') as fp:
+def yml_to_pickle(args):
+    with open("{}".format(args.s), 'r', encoding='utf-8') as fp:
         data = yaml.load(fp)
-    with open("data/{}.pkl".format(data["categories"][0]), 'wb') as fpw:
+    with open("{0}/{1}.pkl".format(args.d[0], data["categories"][0]), 'wb') as fpw:
         pickle.dump(data["conversations"], fpw)
 
-train_tf_idf()

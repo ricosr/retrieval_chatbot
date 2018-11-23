@@ -28,6 +28,8 @@ class Agent:
         while True:
             try:
                 utterance = input(">>>")
+                if utterance == "exit1":
+                    break    # TODO: remove when deploy
                 file_name = self.get_utterance_type(utterance)
                 # index_path = self.config[file_name]
                 self.retrieval.read_indexes(file_name)
