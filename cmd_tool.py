@@ -18,8 +18,7 @@ parser_yaml.add_argument('-d', metavar='destination folder', type=str, default=[
                          help='default: data, if assign other folders, change config.py')
 parser_yaml.set_defaults(func=util.yml_to_pickle)
 
-
-
+# TODO: add more functions
 
 args = parser.parse_args()
 args.func(args)
