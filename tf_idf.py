@@ -30,10 +30,12 @@ class TfIdf:
 
     def predict_tfidf(self, utterances, context_ls):
         for each_context in context_ls:
-            self.vector_context_ls.append(self.current_model.transform([self.parse_cn_to_en_format(each_context[0]) +
-                                                                        self.parse_cn_to_en_format(each_context[1])]))
-            self.vector_utterrance_ls.append(self.current_model.transform([self.parse_cn_to_en_format(utterances) +
-                                                                           self.parse_cn_to_en_format(each_context[1])]))
+            self.vector_context_ls.append(self.current_model.transform(
+                [self.parse_cn_to_en_format(each_context[0]) + self.parse_cn_to_en_format(each_context[1])]))
+            self.vector_utterrance_ls.append(self.current_model.transform(
+                [self.parse_cn_to_en_format(utterances) + self.parse_cn_to_en_format(each_context[1])]))
+            # print([self.parse_cn_to_en_format(each_context[0]) + self.parse_cn_to_en_format(each_context[1])])
+            # print([self.parse_cn_to_en_format(utterances) + self.parse_cn_to_en_format(each_context[1])])
 
     def calculate_distances(self):
         result_ls = []
@@ -50,7 +52,7 @@ class TfIdf:
         return cosine_similarity(x, y)
 
     def parse_cn_to_en_format(self, chinese_characters):
-        seg_list = [each_word for each_word in jieba.cut(chinese_characters, cut_all=True)]
+        seg_list = [each_word for each_word in jieba.cut(chinese_characters, cut_all=False)]
         return " ".join(seg_list)
 
     def normalization(self, ratio_ls):
@@ -70,13 +72,14 @@ class TrainTfIdf:
                 self.files_dict[file_name] = pickle.load(fp)
 
     def parse_cn_to_en_format(self, chinese_characters):
-        seg_list = [each_word for each_word in jieba.cut(chinese_characters, cut_all=True)]
+        seg_list = [each_word for each_word in jieba.cut(chinese_characters, cut_all=False)]
         return " ".join(seg_list)
 
     def train(self):
         for file_name, content in self.files_dict.items():  # content:[[question], [answer]]
-            for each_chat in content:
-                vectorizer = TfidfVectorizer()
-                vectorizer.fit_transform(np.array([self.parse_cn_to_en_format(each_chat[0]) + self.parse_cn_to_en_format(each_chat[1])]))
-                joblib.dump(vectorizer, 'model/{}.pkl'.format(file_name))    # TODO: judge dir
+            tmp_content = map(lambda each_chat: map(self.parse_cn_to_en_format, each_chat), content)
+            content_str_ls = [''.join(list(each_chat)) for each_chat in tmp_content]
+            vectorizer = TfidfVectorizer()
+            vectorizer.fit_transform(content_str_ls)
+            joblib.dump(vectorizer, 'model/{}.pkl'.format(file_name))  # TODO: judge dir
 

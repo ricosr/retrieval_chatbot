@@ -34,7 +34,6 @@ class Agent:
             context_ls = self.retrieval.search_sentences(utterance)
             fuzzy_ratio_ls = fuzzy_matching(utterance, context_ls)
 
-            # TODO tf-idf
             self.tf_idf.select_model(file_name)
             self.tf_idf.predict_tfidf(utterance, context_ls)
             tf_idf_score_ls = self.tf_idf.calculate_distances()
@@ -45,6 +44,7 @@ class Agent:
 
             print(context_ls[fuzzy_ratio_ls.index(max(fuzzy_ratio_ls))], fuzzy_ratio_ls.index(max(fuzzy_ratio_ls)))
             print(context_ls[tf_idf_score_ls.index(max(tf_idf_score_ls))], tf_idf_score_ls.index(max(tf_idf_score_ls)))
+            print(best_index)
             print("fuzzy_ratio_ls:{}".format(fuzzy_ratio_ls))
             print("tf_idf_score_ls:{}".format(tf_idf_score_ls))
             print("final_score_ls:{}".format(final_score_ls))
