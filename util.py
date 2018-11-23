@@ -12,7 +12,7 @@ import config
 
 
 # pickle file of conversations must exist, config.file_dict and config.index_dict must be right
-def add_index():
+def add_index(args):
     build_index = BuildIndex(config)
     build_index.load_pickle()
     build_index.build_index()

@@ -18,6 +18,9 @@ parser_yaml.add_argument('-d', metavar='destination folder', type=str, default=[
                          help='default: data, if assign other folders, change config.py')
 parser_yaml.set_defaults(func=util.yml_to_pickle)
 
+
+parser_index = sub_parsers.add_parser('index', help='add indexes')
+parser_index.set_defaults(func=util.add_index)
 # TODO: add more functions
 
 args = parser.parse_args()
