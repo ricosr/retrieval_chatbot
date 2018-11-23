@@ -34,12 +34,12 @@ class TfIdf:
     def calculate_distances(self):
         result_ls = []
         for tfidf_c, tfidf_u in zip(self.vector_context_ls, self.vector_utterrance_ls):
-            result_ls.append(self.calculate_cos_similarity(tfidf_c, tfidf_u).todense())
+            result_ls.append(self.calculate_cos_similarity(tfidf_c, tfidf_u))
         self.vector_utterrance_ls.clear()
         self.vector_context_ls.clear()
         return result_ls
 
-    def calculate_cos_similarity(self, x, y):  # TODO: not be sure type of x and y
+    def calculate_cos_similarity(self, x, y):
         x = x.reshape(1, -1)
         y = y.reshape(1, -1)
         return cosine_similarity(x, y)
