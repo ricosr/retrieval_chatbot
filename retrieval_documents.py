@@ -57,7 +57,6 @@ class BuildIndex:
         index_config = self.config.index_dict
         analyzer = ChineseAnalyzer()
         schema = Schema(title=TEXT(stored=True), path=ID(stored=True), content=TEXT(stored=True, analyzer=analyzer))
-        # try:
         for file_name, content in self.files_dict.items():    # content:[[question], [answer]]
             index_path = index_config[file_name]
             if not os.path.exists(index_path):
@@ -71,5 +70,3 @@ class BuildIndex:
                     content=content[i][0].strip()
                 )
             writer.commit()
-        # except Exception as e:
-        #     print(e)
