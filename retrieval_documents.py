@@ -39,7 +39,7 @@ class Retrieval:
         seg_list = [each_word for each_word in jieba.cut(utterance, cut_all=True)]
         print(seg_list)
         with self.current_index.searcher() as searcher:
-            for each_seg in seg_list:
+            for each_seg in seg_list:    # TODO: concat neighbor segments to query right answer
                 query = QueryParser("content", self.current_index.schema).parse(each_seg)
                 results = searcher.search(query, limit=self.num_ir)
                 for hit in results:
@@ -47,7 +47,6 @@ class Retrieval:
         tmp_result_ls = [(each_content[0], each_content[1]) for each_content in result_ls]
         return list(set(tmp_result_ls))    # TODO: need to improve
 
-    # def read_pickle
 
 class BuildIndex:
     def __init__(self, config):

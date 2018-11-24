@@ -22,7 +22,7 @@ class Agent:
         self.tf_idf = TfIdf(config)
 
     def get_utterance_type(self, utterance):    # TODO get correct file name by utterance
-        return "xiaohuangji"    # return file_name
+        return "weibo"    # return file_name
 
     def start(self):
         while True:

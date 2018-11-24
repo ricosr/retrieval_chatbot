@@ -13,14 +13,16 @@ parser = argparse.ArgumentParser(
 sub_parsers = parser.add_subparsers()
 
 parser_yaml = sub_parsers.add_parser('ymltopkl', help='convert yml file to pickle file')
-parser_yaml.add_argument('-s', metavar='source file', type=str, help='mandatory! the yaml or yml file you want to convert')
+parser_yaml.add_argument('-s', metavar='source file', type=str,
+                         help='default: None, if not assign the yaml or yml file you want to convert, then convert all in directory file/yml')
 parser_yaml.add_argument('-d', metavar='destination folder', type=str, default=["data"], nargs='+',
                          help='default: data, if assign other folders, change config.py')
 parser_yaml.set_defaults(func=util.yml_to_pickle)
 
 
 parser_conv = sub_parsers.add_parser('convtopkl', help='convert conv file to pickle file')
-parser_conv.add_argument('-s', metavar='source file', type=str, help='mandatory! the conv file you want to convert')
+parser_conv.add_argument('-s', metavar='source file', type=str,
+                         help='default: None, if not assign the conv file you want to convert, then convert all in directory file/conv')
 parser_conv.add_argument('-d', metavar='destination folder', type=str, default=["data"], nargs='+',
                          help='default: data, if assign other folders, change config.py')
 parser_conv.set_defaults(func=util.conv_to_pickle)
