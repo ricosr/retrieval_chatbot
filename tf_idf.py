@@ -4,8 +4,8 @@
 # Copyright (c) 2018 by Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 import pickle
+import os
 
-import numpy as np
 import jieba
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.externals import joblib
@@ -80,10 +80,12 @@ class TrainTfIdf:
         return " ".join(seg_list)
 
     def train(self):
+        if not os.path.exists("model"):
+            os.mkdir("model")
         for file_name, content in self.files_dict.items():  # content:[[question], [answer]]
             tmp_content = map(lambda each_chat: map(self.parse_cn_to_en_format, each_chat), content)
             content_str_ls = [''.join(list(each_chat)) for each_chat in tmp_content]
             vectorizer = TfidfVectorizer()
             vectorizer.fit_transform(content_str_ls)
-            joblib.dump(vectorizer, 'model/{}.pkl'.format(file_name))  # TODO: judge dir
+            joblib.dump(vectorizer, 'model/{}.pkl'.format(file_name))
 

@@ -3,6 +3,7 @@
 # chinese computing project
 # Copyright (c) 2018 by Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
+import os
 import pickle
 import yaml
 import json
@@ -26,6 +27,8 @@ def train_tf_idf(args):
 def yml_to_pickle(args):
     with open("{}".format(args.s), 'r', encoding='utf-8') as fp:
         data = yaml.load(fp)
+    if not os.path.exists(args.d[0]):
+        os.mkdir(args.d[0])
     with open("{0}/{1}.pkl".format(args.d[0], data["categories"][0]), 'wb') as fpw:
         pickle.dump(data["conversations"], fpw)
 
@@ -47,6 +50,8 @@ def conv_to_pickle(args):
                 if file_lines[i+1].strip() == "E":
                     chat_ls.append(tmp_ls)
                     tmp_ls = []
+    if not os.path.exists(args.d[0]):
+        os.mkdir(args.d[0])
     with open("{0}/{1}.pkl".format(args.d[0], file_name), 'wb') as fpw:
         pickle.dump(chat_ls, fpw)
 
@@ -62,6 +67,8 @@ def json_to_pickle(args):
         content = each_chat[1][0]
         content = ''.join(content.split(' ')).strip()
         chat_ls.append([utterance, content])
+    if not os.path.exists(args.d[0]):
+        os.mkdir(args.d[0])
     with open("{0}/{1}.pkl".format(args.d[0], file_name), 'wb') as fpw:
         pickle.dump(chat_ls, fpw)
 
