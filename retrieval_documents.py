@@ -22,11 +22,17 @@ class Retrieval:
         self.load_index()
 
     def load_index(self):
-        for file_name, file_path in self.config.index_dict.items():
-            self.index_dict[file_name] = open_dir(file_path)
+        try:
+            for file_name, file_path in self.config.index_dict.items():
+                self.index_dict[file_name] = open_dir(file_path)
+        except Exception as e:
+            pass
 
     def read_indexes(self, file_name):
-        self.current_index = self.index_dict[file_name]
+        try:
+            self.current_index = self.index_dict[file_name]
+        except Exception as e:
+            pass
 
     def search_sentences(self, utterance):
         result_ls = []

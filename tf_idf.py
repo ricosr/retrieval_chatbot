@@ -22,11 +22,17 @@ class TfIdf:
         self.load_models(self.config)
 
     def load_models(self, config):
-        for file_name, file_path in self.config.model_dict.items():
-            self.model_dict[file_name] = joblib.load(file_path)
+        try:
+            for file_name, file_path in self.config.model_dict.items():
+                self.model_dict[file_name] = joblib.load(file_path)
+        except Exception as e:
+            pass
 
     def select_model(self, file_name):
-        self.current_model = self.model_dict[file_name]
+        try:
+            self.current_model = self.model_dict[file_name]
+        except Exception as e:
+            pass
 
     def predict_tfidf(self, utterances, context_ls):
         for each_context in context_ls:
