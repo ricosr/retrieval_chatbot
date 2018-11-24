@@ -22,7 +22,7 @@ class Agent:
         self.tf_idf = TfIdf(config)
 
     def get_utterance_type(self, utterance):    # TODO get correct file name by utterance
-        return "AI"    # return file_name
+        return "science"    # return file_name
 
     def start(self):
         while True:

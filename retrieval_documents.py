@@ -31,6 +31,7 @@ class Retrieval:
     def search_sentences(self, utterance):
         result_ls = []
         seg_list = [each_word for each_word in jieba.cut(utterance, cut_all=True)]
+        print(seg_list)
         with self.current_index.searcher() as searcher:
             for each_seg in seg_list:
                 query = QueryParser("content", self.current_index.schema).parse(each_seg)
