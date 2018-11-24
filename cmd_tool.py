@@ -21,7 +21,9 @@ parser_yaml.set_defaults(func=util.yml_to_pickle)
 
 parser_index = sub_parsers.add_parser('index', help='add indexes')
 parser_index.set_defaults(func=util.add_index)
-# TODO: add more functions
+
+parser_index = sub_parsers.add_parser('tfidf', help='train TF-IDF model')
+parser_index.set_defaults(func=util.train_tf_idf)
 
 args = parser.parse_args()
 args.func(args)

@@ -17,7 +17,7 @@ def add_index(args):
     build_index.load_pickle()
     build_index.build_index()
 
-def train_tf_idf():
+def train_tf_idf(args):
     tf_idf = TrainTfIdf(config)
     tf_idf.load_pickle()
     tf_idf.train()

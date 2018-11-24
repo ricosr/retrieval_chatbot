@@ -16,6 +16,11 @@ file_dict = {"AI": "data/AI.pkl", "profile": "data/profile.pkl", "conversations"
              "literature": "data/literature.pkl", "money": "data/money.pkl", "movies": "data/movies.pkl",
              "politics": "data/politics.pkl", "psychology": "data/psychology.pkl", "science": "data/science.pkl",
              "sports": "data/sports.pkl", "trivia": "data/trivia.pkl"}
-model_dict = {"AI": "model/AI.pkl"}
+model_dict = {"AI": "model/AI.pkl", "profile": "model/profile.pkl", "conversations": "model/conversations.pkl",
+             "emotion": "model/emotion.pkl", "food": "model/food.pkl", "gossip": "model/gossip.pkl",
+             "greetings": "model/greetings.pkl", "history": "model/history.pkl", "humor": "model/humor.pkl",
+             "literature": "model/literature.pkl", "money": "model/money.pkl", "movies": "model/movies.pkl",
+             "politics": "model/politics.pkl", "psychology": "model/psychology.pkl", "science": "model/science.pkl",
+             "sports": "model/sports.pkl", "trivia": "model/trivia.pkl"}
 
 
