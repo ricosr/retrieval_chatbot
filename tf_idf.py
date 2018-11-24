@@ -66,10 +66,14 @@ class TrainTfIdf:
         self.config = config
         self.files_dict = {}
 
-    def load_pickle(self):
-        for file_name, path in self.config.file_dict.items():
-            with open(path, 'rb') as fp:
-                self.files_dict[file_name] = pickle.load(fp)
+    def load_pickle(self, file=None):
+        if file:
+            with open(self.config.file_dict[file], 'rb') as fp:
+                self.files_dict[file] = pickle.load(fp)
+        else:
+            for file_name, path in self.config.file_dict.items():
+                with open(path, 'rb') as fp:
+                    self.files_dict[file_name] = pickle.load(fp)
 
     def parse_cn_to_en_format(self, chinese_characters):
         seg_list = [each_word for each_word in jieba.cut(chinese_characters, cut_all=False)]

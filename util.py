@@ -14,12 +14,12 @@ import config
 # pickle file of conversations must exist, config.file_dict and config.index_dict must be right
 def add_index(args):
     build_index = BuildIndex(config)
-    build_index.load_pickle()
+    build_index.load_pickle(args.f[0])
     build_index.build_index()
 
 def train_tf_idf(args):
     tf_idf = TrainTfIdf(config)
-    tf_idf.load_pickle()
+    tf_idf.load_pickle(args.f[0])
     tf_idf.train()
 
 def yml_to_pickle(args):

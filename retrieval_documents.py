@@ -48,10 +48,14 @@ class BuildIndex:
         self.config = config
         self.files_dict = {}
 
-    def load_pickle(self):
-        for file_name, path in self.config.file_dict.items():
-            with open(path, 'rb') as fp:
-                self.files_dict[file_name] = pickle.load(fp)
+    def load_pickle(self, file=None):
+        if file:
+            with open(self.config.file_dict[file], 'rb') as fp:
+                self.files_dict[file] = pickle.load(fp)
+        else:
+            for file_name, path in self.config.file_dict.items():
+                with open(path, 'rb') as fp:
+                    self.files_dict[file_name] = pickle.load(fp)
 
     def build_index(self):
         index_config = self.config.index_dict
