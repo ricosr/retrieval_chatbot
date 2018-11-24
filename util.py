@@ -5,6 +5,7 @@
 
 import pickle
 import yaml
+import json
 
 from retrieval_documents import BuildIndex
 from tf_idf import TrainTfIdf
@@ -48,6 +49,24 @@ def conv_to_pickle(args):
                     tmp_ls = []
     with open("{0}/{1}.pkl".format(args.d[0], file_name), 'wb') as fpw:
         pickle.dump(chat_ls, fpw)
+
+def json_to_pickle(args):
+    json_file = args.s
+    file_name = json_file.split('/')[-1].split('.')[0]
+    with open(json_file, 'r', encoding='utf-8') as fp:
+        json_data = json.load(fp)
+    chat_ls = []
+    for each_chat in json_data:
+        utterance = each_chat[0][0]
+        utterance = ''.join(utterance.split(' ')).strip()
+        content = each_chat[1][0]
+        content = ''.join(content.split(' ')).strip()
+        chat_ls.append([utterance, content])
+    with open("{0}/{1}.pkl".format(args.d[0], file_name), 'wb') as fpw:
+        pickle.dump(chat_ls, fpw)
+
+
+
 
 
 
