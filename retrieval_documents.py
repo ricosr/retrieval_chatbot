@@ -41,16 +41,25 @@ class Retrieval:
         new_seg_ls = []
         for each_part in utterance_ls:
             seg_list.append([each_word for each_word in jieba.cut(each_part, cut_all=False)])
-        for each_seg_ls in seg_list:
-            self.tmp_seg_ls = []
-            self.create_query_segments(each_seg_ls)
-            if len(self.tmp_seg_ls) > 1:
-                list(map(self.tmp_seg_ls.remove, each_seg_ls))
-            new_seg_ls.append(self.tmp_seg_ls)
+        print(seg_list)
+        if len(seg_list) == 1 and len(seg_list[0]) < 5:
+            for each_seg_ls in seg_list:
+                self.tmp_seg_ls = []
+                self.create_query_segments(each_seg_ls)
+                new_seg_ls.append(self.tmp_seg_ls)
+        else:
+            for each_seg_ls in seg_list:
+                self.tmp_seg_ls = []
+                self.create_query_segments(each_seg_ls)
+                if len(self.tmp_seg_ls) > 1:
+                    list(map(self.tmp_seg_ls.remove, each_seg_ls))
+                if len(self.tmp_seg_ls) > 2:
+                    self.tmp_seg_ls.remove(sorted(self.tmp_seg_ls, key=lambda k: len(k), reverse=True)[0])
+                new_seg_ls.append(self.tmp_seg_ls)
         print(new_seg_ls)
         for each_new_seg in new_seg_ls:
             with self.current_index.searcher() as searcher:
-                for each_seg in each_new_seg:    # TODO: concat neighbor segments to query right answer
+                for each_seg in each_new_seg:
                     query = QueryParser("content", self.current_index.schema).parse(each_seg)
                     results = searcher.search(query, limit=self.num_ir)
                     for hit in results:
@@ -63,7 +72,7 @@ class Retrieval:
         for i in range(len(sentence_ls)):
             if sentence_ls[i] in self.config.punctuation_ls:
                 sentence_ls[i] = '\t'
-        return ''.join(sentence_ls).split('\t')
+        return ''.join(sentence_ls).strip().split('\t')
 
     def create_query_segments(self, seg_list):
         temp_seg = ''
