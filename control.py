@@ -23,7 +23,7 @@ class Agent:
         self.tf_idf = TfIdf(config)
 
     def get_utterance_type(self, utterance):    # TODO get correct file name by utterance
-        return "xiaohuangji"    # return file_name
+        return "weibo"    # return file_name  0.8
 
     def start(self):
         while True:
@@ -58,9 +58,12 @@ class Agent:
                     continue
 
                 final_score_ls = [(fuzzy_ratio*0.7 + tf_tdf_score*0.3) for fuzzy_ratio, tf_tdf_score in zip(fuzzy_ratio_ls, tf_idf_score_ls)]
+                # TODO: find a suitable weight
                 best_index = final_score_ls.index(max(final_score_ls))
                 print("<<<{}".format(context_ls[best_index][1]))
                 print(context_ls[best_index][0])
+                print(max(final_score_ls))# 0.8 ->微博
+                print(final_score_ls)
 
 
                 print(context_ls[fuzzy_ratio_ls.index(max(fuzzy_ratio_ls))], fuzzy_ratio_ls.index(max(fuzzy_ratio_ls)))
