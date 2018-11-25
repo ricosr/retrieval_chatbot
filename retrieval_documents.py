@@ -35,25 +35,41 @@ class Retrieval:
             pass
 
     def search_sentences(self, utterance):
+        utterance_ls = self.cut_by_punctuation(utterance)
         result_ls = []
-        seg_list = [each_word for each_word in jieba.cut(utterance, cut_all=False)]
-        self.new_seg_ls = []
-        self.create_query_segments(seg_list)
-        print(self.new_seg_ls)
-        with self.current_index.searcher() as searcher:
-            for each_seg in self.new_seg_ls:    # TODO: concat neighbor segments to query right answer
-                query = QueryParser("content", self.current_index.schema).parse(each_seg)
-                results = searcher.search(query, limit=self.num_ir)
-                for hit in results:
-                    result_ls.append([hit["content"], hit["title"]])
+        seg_list = []
+        new_seg_ls = []
+        for each_part in utterance_ls:
+            seg_list.append([each_word for each_word in jieba.cut(each_part, cut_all=False)])
+        for each_seg_ls in seg_list:
+            self.tmp_seg_ls = []
+            self.create_query_segments(each_seg_ls)
+            if len(self.tmp_seg_ls) > 1:
+                list(map(self.tmp_seg_ls.remove, each_seg_ls))
+            new_seg_ls.append(self.tmp_seg_ls)
+        print(new_seg_ls)
+        for each_new_seg in new_seg_ls:
+            with self.current_index.searcher() as searcher:
+                for each_seg in each_new_seg:    # TODO: concat neighbor segments to query right answer
+                    query = QueryParser("content", self.current_index.schema).parse(each_seg)
+                    results = searcher.search(query, limit=self.num_ir)
+                    for hit in results:
+                        result_ls.append([hit["content"], hit["title"]])
         tmp_result_ls = [(each_content[0], each_content[1]) for each_content in result_ls]
         return list(set(tmp_result_ls))    # TODO: need to improve
+
+    def cut_by_punctuation(self, sentence):
+        sentence_ls = list(sentence)
+        for i in range(len(sentence_ls)):
+            if sentence_ls[i] in self.config.punctuation_ls:
+                sentence_ls[i] = '\t'
+        return ''.join(sentence_ls).split('\t')
 
     def create_query_segments(self, seg_list):
         temp_seg = ''
         for each in seg_list:
             temp_seg += each
-            self.new_seg_ls.append(temp_seg)
+            self.tmp_seg_ls.append(temp_seg)
         if len(seg_list) == 0:
             return
         self.create_query_segments(seg_list[1:])

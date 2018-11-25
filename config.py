@@ -27,4 +27,9 @@ model_dict = {"AI": "model/AI.pkl", "profile": "model/profile.pkl", "conversatio
              "sports": "model/sports.pkl", "trivia": "model/trivia.pkl", "xiaohuangji": "model/xiaohuangji.pkl",
              "weibo": "model/weibo.pkl"}
 
+punctuation_ls = ['`', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '+', '=',
+                  '{', '[', '}', ']', '|', '\\', ':', ';', '\'', '\"', '<', ',', '>', '.', '?', '/',
+                  '！', '·', '￥', '……', '（', '）', '——', '【', '】', '、', '：', '；', '’', '‘', '“',
+                  '”', '《', '，', '。', '》', '？']
+
 # TODO: add function to create config file

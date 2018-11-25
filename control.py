@@ -18,7 +18,7 @@ class Agent:
         self.init_all_states()
 
     def init_all_states(self):
-        self.retrieval = Retrieval(num_ir=10, config=self.config)
+        self.retrieval = Retrieval(num_ir=NUM_OF_IR, config=self.config)
         self.tf_idf = TfIdf(config)
 
     def get_utterance_type(self, utterance):    # TODO get correct file name by utterance
@@ -44,13 +44,14 @@ class Agent:
                 final_score_ls = [(fuzzy_ratio*0.7 + tf_tdf_score*0.3) for fuzzy_ratio, tf_tdf_score in zip(fuzzy_ratio_ls, tf_idf_score_ls)]
                 best_index = final_score_ls.index(max(final_score_ls))
                 print("<<<{}".format(context_ls[best_index][1]))
+                print(context_ls[best_index][0])
 
                 print(context_ls[fuzzy_ratio_ls.index(max(fuzzy_ratio_ls))], fuzzy_ratio_ls.index(max(fuzzy_ratio_ls)))
                 print(context_ls[tf_idf_score_ls.index(max(tf_idf_score_ls))], tf_idf_score_ls.index(max(tf_idf_score_ls)))
                 print(best_index)
-                print("fuzzy_ratio_ls:{}".format(fuzzy_ratio_ls))
-                print("tf_idf_score_ls:{}".format(tf_idf_score_ls))
-                print("final_score_ls:{}".format(final_score_ls))
+                # print("fuzzy_ratio_ls:{}".format(fuzzy_ratio_ls))
+                # print("tf_idf_score_ls:{}".format(tf_idf_score_ls))
+                # print("final_score_ls:{}".format(final_score_ls))
             except Exception as e:
                 pass
 
