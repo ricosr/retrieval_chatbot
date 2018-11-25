@@ -10,7 +10,7 @@ import config
 
 # TODO: distribute message by threading or tornado
 
-NUM_OF_IR = 10
+NUM_OF_IR = 2
 
 class Agent:
     def __init__(self):
@@ -52,7 +52,7 @@ class Agent:
                 print("tf_idf_score_ls:{}".format(tf_idf_score_ls))
                 print("final_score_ls:{}".format(final_score_ls))
             except Exception as e:
-                continue
+                pass
 
 if __name__ == '__main__':
     agent = Agent()

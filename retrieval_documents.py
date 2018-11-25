@@ -36,16 +36,27 @@ class Retrieval:
 
     def search_sentences(self, utterance):
         result_ls = []
-        seg_list = [each_word for each_word in jieba.cut(utterance, cut_all=True)]
-        print(seg_list)
+        seg_list = [each_word for each_word in jieba.cut(utterance, cut_all=False)]
+        self.new_seg_ls = []
+        self.create_query_segments(seg_list)
+        print(self.new_seg_ls)
         with self.current_index.searcher() as searcher:
-            for each_seg in seg_list:    # TODO: concat neighbor segments to query right answer
+            for each_seg in self.new_seg_ls:    # TODO: concat neighbor segments to query right answer
                 query = QueryParser("content", self.current_index.schema).parse(each_seg)
                 results = searcher.search(query, limit=self.num_ir)
                 for hit in results:
                     result_ls.append([hit["content"], hit["title"]])
         tmp_result_ls = [(each_content[0], each_content[1]) for each_content in result_ls]
         return list(set(tmp_result_ls))    # TODO: need to improve
+
+    def create_query_segments(self, seg_list):
+        temp_seg = ''
+        for each in seg_list:
+            temp_seg += each
+            self.new_seg_ls.append(temp_seg)
+        if len(seg_list) == 0:
+            return
+        self.create_query_segments(seg_list[1:])
 
 
 class BuildIndex:
