@@ -1,0 +1,6 @@
+argparse
+fuzzywuzzy
+whoosh
+jieba
+scikit-learn
+python-Levenshtein

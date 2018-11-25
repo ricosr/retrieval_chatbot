@@ -37,13 +37,13 @@ parser_json.set_defaults(func=util.json_to_pickle)
 
 parser_index = sub_parsers.add_parser('index', help='add indexes')
 parser_index.add_argument('-f', metavar='file name', type=str, default=[], nargs='+',
-                         help='default: None, if no assign the value, build indexes for all data files')
+                          help='default: None, if no assign the value, build indexes for all data files')
 parser_index.set_defaults(func=util.add_index)
 
 
 parser_tfidf = sub_parsers.add_parser('tfidf', help='train TF-IDF model')
 parser_tfidf.add_argument('-f', metavar='file name', type=str, default=[], nargs='+',
-                         help='default: None, if no assign the value, train TF-IDF for all data files')
+                          help='default: None, if no assign the value, train TF-IDF for all data files')
 parser_tfidf.set_defaults(func=util.train_tf_idf)
 
 

@@ -15,7 +15,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 class TfIdf:
     def __init__(self, config):
         self.config = config
-        # self.vectorizer = TfidfVectorizer()
         self.model_dict = {}
         self.vector_context_ls = []
         self.vector_utterrance_ls = []

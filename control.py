@@ -31,7 +31,6 @@ class Agent:
                 if utterance == "exit1":
                     break    # TODO: remove when deploy
                 file_name = self.get_utterance_type(utterance)
-                # index_path = self.config[file_name]
                 self.retrieval.read_indexes(file_name)
                 context_ls = self.retrieval.search_sentences(utterance)
                 if not context_ls:

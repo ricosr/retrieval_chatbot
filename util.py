@@ -73,7 +73,7 @@ def conv_to_pickle(args):
         file_name = args.s.split('/')[-1].split('.')[0]
         write_pickle(args, file_name, True)
 
-def json_to_pickle(args):   # only be used in this special format corpus
+def json_to_pickle(args):   # only be used in this special format corpus of this project
     json_file = args.s
     file_name = json_file.split('/')[-1].split('.')[0]
     with open(json_file, 'r', encoding='utf-8') as fp:
