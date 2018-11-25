@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# chinese computing project
+# COMP5412: Chinese computing project
 # Copyright (c) by 2018 Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 from retrieval_documents import Retrieval

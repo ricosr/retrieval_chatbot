@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# chinese computing project
+# COMP5412: Chinese computing project
 # Copyright (c) 2018 by Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 from fuzzywuzzy import fuzz
