@@ -3,7 +3,7 @@
 ## English：
 * 2018 Chinese computing COMP5412 projcet
 * team members: Mo Feiyu, Sun Rui, Wang Zizhe, Edison Liang
-* This is lecture project assessment, please obey open source spirit, you can refer to it in your homework, but don't plagiarize. 
+* This is lecture project assessment, please obey opening source spirit, you can refer to it in your homework, but don't plagiarize. 
 * At present, it's just a simple demo, we plan to continue developing it after this semester, it you are interested in it, please leave a message in Issues.
 
 ## 中文：
