@@ -20,7 +20,7 @@ class Agent:
     def __init__(self):
         self.config = config
         self.punctuation_str = ''.join(self.config.punctuation_ls)
-        self.frequency_domain = frequency_domain
+        self.frequency_domain_dict = frequency_domain.frequency_dict
         self.init_all_states()
         # self.record_chat_ls = []
 
@@ -31,9 +31,12 @@ class Agent:
 
     def select_domain(self, utterance):
         utterance_words = [each_word for each_word in jieba.cut(utterance, cut_all=False)]
-        exist_num = 0
+        print(utterance_words)
         for each_word in utterance_words:
-            if each_word in utterance_words and
+            if each_word in self.frequency_domain_dict.keys():
+                print(each_word)
+                return "domains"
+        return "xiaohuangji"
 
     def get_utterance_type(self, utterance):
         pass       # TODO: get correct file name by utterance
@@ -51,16 +54,21 @@ class Agent:
                 max_score_indexes.append(i)
         return choice(max_score_indexes)
 
-    def get_answer(self, utterance, file_name):
+    def get_answer(self, utterance, file_name=None):
         try:
             utterance = utterance.rstrip(self.punctuation_str)
+            if not file_name:
+                file_name = self.select_domain(utterance)
+            print(file_name)
 
             # file_name = self.get_utterance_type(utterance)
             self.retrieval.read_indexes(file_name)
             context_ls = self.retrieval.search_sentences(utterance)
+            print(context_ls)
             if not context_ls:
                 return "对不起亲，没听懂你说啥，你再重新组织一下语言吧。"
             fuzzy_ratio_ls = fuzzy_matching(utterance, context_ls)
+            print(fuzzy_ratio_ls)
 
             self.tf_idf.select_model(file_name)
             self.tf_idf.predict_tfidf(utterance, context_ls)
@@ -92,7 +100,7 @@ class Agent:
                               zip(fuzzy_ratio_ls, tf_idf_score_ls)]
             # TODO: find a suitable weight
             print(final_score_ls)
-            if max(final_score_ls) < 0.85 and file_name != "weibo":
+            if max(final_score_ls) < 0.85 and file_name != "weibo" and file_name != "domains": # TODO: ugly code
                 print(max(final_score_ls))
                 answer = self.get_answer(utterance, "weibo")
                 return answer
@@ -121,7 +129,7 @@ class Agent:
             utterance = input(">>>")
             if utterance.strip() == "exit1":
                 break
-            answer = self.get_answer(utterance, "xiaohuangji")
+            answer = self.get_answer(utterance)
             print("<<<{}".format(answer))
 
 
