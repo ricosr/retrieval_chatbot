@@ -5,3 +5,4 @@ jieba
 scikit-learn
 python-Levenshtein
 nltk
+gensim
