@@ -24,7 +24,7 @@ def add_index(args):
 
 def add_domain_index(args):
     build_index = BuildIndex(config)
-    build_index.load_pickle(args.f[0])
+    build_index.load_pickle(args.f)
     build_index.build_domains_index()
 
 def train_tf_idf(args):
@@ -128,7 +128,7 @@ def combine_pickle(dir_path):
     with open("data/domains.pkl", 'wb') as fpw:
         pickle.dump(final_ls, fpw)
 
-count_none_frequency("data/domains.pkl")
+# combine_pickle("data")
 
 
 
