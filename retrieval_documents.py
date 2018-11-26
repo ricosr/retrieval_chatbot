@@ -20,6 +20,7 @@ class Retrieval:
         self.current_index = None
         self.index_dict = {}
         self.load_index()
+        jieba.initialize()
 
     def load_index(self):
         try:
