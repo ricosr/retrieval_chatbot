@@ -13,7 +13,7 @@ import nltk
 
 from retrieval_documents import BuildIndex
 from tf_idf import TrainTfIdf
-import config
+from config import config
 
 
 # pickle file of conversations must exist, config.file_dict and config.index_dict must be right
@@ -106,9 +106,20 @@ def count_word_frequency(file_name):
                     frequency_dict[word] = frequency_dict[word] + freq
                 else:
                     frequency_dict[word] = freq
-    print(frequency_dict)
+    with open("config/frequency_domain.py", "a", encoding="utf-8") as fwp:
+        fwp.write("frequency_dict = {}".format(str(frequency_dict)))
 
-count_word_frequency("data/AI.pkl")
+
+def combine_pickle(dir_path):
+    final_ls = []
+    dir_ls = os.listdir(dir_path)
+    for each_file in dir_ls:
+        with open("{}/{}".format(dir_path, each_file), 'rb') as fp:
+            final_ls += pickle.load(fp)
+    with open("data/domains.pkl", 'wb') as fpw:
+        pickle.dump(final_ls, fpw)
+
+count_word_frequency("data/domains.pkl")
 
 
 

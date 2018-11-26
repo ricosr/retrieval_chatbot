@@ -8,7 +8,7 @@ from random import choice
 from retrieval_documents import Retrieval
 from fuzzy_match import fuzzy_matching
 from tf_idf import TfIdf
-import config
+from config import config
 
 # TODO: distribute message by threading or tornado
 
@@ -17,16 +17,18 @@ NUM_OF_IR = 2
 class Agent:
     def __init__(self):
         self.config = config
-        self.punctuation_str = ''.join(config.punctuation_ls)
+        self.punctuation_str = ''.join(self.config.punctuation_ls)
         self.init_all_states()
         # self.record_chat_ls = []
 
     def init_all_states(self):
         self.retrieval = Retrieval(num_ir=NUM_OF_IR, config=self.config)
-        self.tf_idf = TfIdf(config)
+        self.tf_idf = TfIdf(self.config)
 
-    # def select_domain(self):
-    #
+    def select_domain(self):
+        pass
+
+
     def get_utterance_type(self, utterance):
         pass       # TODO: get correct file name by utterance
                    # TODO: use word2vec to word to dimensions, then use k-means to make clusters
@@ -84,7 +86,7 @@ class Agent:
                               zip(fuzzy_ratio_ls, tf_idf_score_ls)]
             # TODO: find a suitable weight
             print(final_score_ls)
-            if max(final_score_ls) < 0.9 and file_name != "weibo":
+            if max(final_score_ls) < 0.85 and file_name != "weibo":
                 print(max(final_score_ls))
                 answer = self.get_answer(utterance, "weibo")
                 return answer
