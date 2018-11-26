@@ -115,7 +115,7 @@ def count_none_frequency(file_name):   # just save none
                     frequency_dict[word] = frequency_dict[word] + freq
                 else:
                     frequency_dict[word] = freq
-    with open("config/frequency_domain.py", "w", encoding="utf-8") as fwp:
+    with open("frequency_domain.py", "w", encoding="utf-8") as fwp:
         fwp.write("frequency_dict = {}".format(str(frequency_dict)))
 
 
