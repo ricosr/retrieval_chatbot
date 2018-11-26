@@ -8,6 +8,8 @@ from fuzzywuzzy import fuzz
 def normalization(ratio_ls):
     max_ratio = max(ratio_ls)
     min_ratio = min(ratio_ls)
+    if max_ratio == min_ratio:
+        return [1]
     return [(each_ratio - min_ratio)/(max_ratio - min_ratio) for each_ratio in ratio_ls]
 
 def fuzzy_matching(utterance, context_ls):

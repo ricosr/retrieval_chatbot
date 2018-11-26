@@ -63,6 +63,8 @@ class TfIdf:
     def normalization(self, ratio_ls):
         max_ratio = max(ratio_ls)
         min_ratio = min(ratio_ls)
+        if max_ratio == min_ratio:
+            return [1]
         return [(each_ratio - min_ratio) / (max_ratio - min_ratio) for each_ratio in ratio_ls]
 
 
