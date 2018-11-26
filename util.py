@@ -8,7 +8,7 @@ import pickle
 import yaml
 import json
 
-import jieba
+import jieba.posseg as pseg
 import nltk
 
 from retrieval_documents import BuildIndex
@@ -93,20 +93,24 @@ def json_to_pickle(args):   # only be used in this special format corpus of this
     with open("{0}/{1}.pkl".format(args.d[0], file_name), 'wb') as fpw:
         pickle.dump(chat_ls, fpw)
 
-def count_word_frequency(file_name):
+def count_none_frequency(file_name):   # just save none
     frequency_dict = {}
     with open(file_name, "rb") as fp:
         chat_ls = pickle.load(fp)
     for each_pair in chat_ls:
         for each_sentence in each_pair:
-            cut_words = list(jieba.cut(each_sentence, cut_all=True))
-            freq_dict_tmp = nltk.FreqDist(cut_words)
+            words_ls = []
+            cut_words = dict(pseg.cut(each_sentence))
+            for word, flag in cut_words.items():
+                if 'n' in flag:
+                    words_ls.append(word)
+            freq_dict_tmp = nltk.FreqDist(words_ls)
             for word, freq in freq_dict_tmp.items():
                 if word in frequency_dict:
                     frequency_dict[word] = frequency_dict[word] + freq
                 else:
                     frequency_dict[word] = freq
-    with open("config/frequency_domain.py", "a", encoding="utf-8") as fwp:
+    with open("config/frequency_domain.py", "w", encoding="utf-8") as fwp:
         fwp.write("frequency_dict = {}".format(str(frequency_dict)))
 
 
@@ -119,7 +123,7 @@ def combine_pickle(dir_path):
     with open("data/domains.pkl", 'wb') as fpw:
         pickle.dump(final_ls, fpw)
 
-count_word_frequency("data/domains.pkl")
+count_none_frequency("data/domains.pkl")
 
 
 

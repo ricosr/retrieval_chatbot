@@ -5,10 +5,12 @@
 
 from random import choice
 
+import jieba
+
 from retrieval_documents import Retrieval
 from fuzzy_match import fuzzy_matching
 from tf_idf import TfIdf
-from config import config
+from config import config, frequency_domain
 
 # TODO: distribute message by threading or tornado
 
@@ -18,16 +20,20 @@ class Agent:
     def __init__(self):
         self.config = config
         self.punctuation_str = ''.join(self.config.punctuation_ls)
+        self.frequency_domain = frequency_domain
         self.init_all_states()
         # self.record_chat_ls = []
 
     def init_all_states(self):
         self.retrieval = Retrieval(num_ir=NUM_OF_IR, config=self.config)
         self.tf_idf = TfIdf(self.config)
+        jieba.initialize()
 
-    def select_domain(self):
-        pass
-
+    def select_domain(self, utterance):
+        utterance_words = [each_word for each_word in jieba.cut(utterance, cut_all=False)]
+        exist_num = 0
+        for each_word in utterance_words:
+            if each_word in utterance_words and
 
     def get_utterance_type(self, utterance):
         pass       # TODO: get correct file name by utterance
