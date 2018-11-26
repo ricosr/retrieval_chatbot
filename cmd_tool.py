@@ -42,8 +42,7 @@ parser_index.set_defaults(func=util.add_index)
 
 
 parser_indexdomain = sub_parsers.add_parser('indexdomain', help='add indexes')
-parser_indexdomain.add_argument('-f', metavar='file name', type=str,
-                          help='mandatory! the name of domain path')
+parser_indexdomain.add_argument('-f', metavar='file name', type=str, help='mandatory! the name of domain path')
 parser_indexdomain.set_defaults(func=util.add_domain_index)
 
 
@@ -51,6 +50,11 @@ parser_tfidf = sub_parsers.add_parser('tfidf', help='train TF-IDF model')
 parser_tfidf.add_argument('-f', metavar='file name', type=str, default=[], nargs='+',
                           help='default: None, if no assign the value, train TF-IDF for all data files')
 parser_tfidf.set_defaults(func=util.train_tf_idf)
+
+
+parser_concat_pkl = sub_parsers.add_parser('catpkl', help='concat pickle files')
+parser_concat_pkl.add_argument('-p', metavar='pickles file path', type=str, help='mandatory! the path of pickle files')
+parser_concat_pkl.set_defaults(func=util.combine_pickle)
 
 
 args = parser.parse_args()

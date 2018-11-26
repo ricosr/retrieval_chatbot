@@ -119,7 +119,8 @@ def count_none_frequency(file_name):   # just save none
         fwp.write("frequency_dict = {}".format(str(frequency_dict)))
 
 
-def combine_pickle(dir_path):
+def combine_pickle(args):
+    dir_path = args.p
     final_ls = []
     dir_ls = os.listdir(dir_path)
     for each_file in dir_ls:
@@ -128,7 +129,6 @@ def combine_pickle(dir_path):
     with open("data/domains.pkl", 'wb') as fpw:
         pickle.dump(final_ls, fpw)
 
-# combine_pickle("data")
 
 
 

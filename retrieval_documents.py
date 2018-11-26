@@ -5,6 +5,7 @@
 
 import pickle
 import os
+import copy
 
 from whoosh.fields import *
 from whoosh.qparser import QueryParser
@@ -35,13 +36,23 @@ class Retrieval:
         except Exception as e:
             pass
 
+    def remove_high_freq_words(self, words_ls, origin_ls):
+        if words_ls:
+            tmp_ls = copy.deepcopy(origin_ls)
+            for i in range(len(origin_ls)):
+                if origin_ls[i] in words_ls:
+                    tmp_ls.pop(i)
+            return tmp_ls
+        return origin_ls
+
     def search_sentences(self, utterance):
         utterance_ls = self.cut_by_punctuation(utterance)
         result_ls = []
         seg_list = []
         new_seg_ls = []
         for each_part in utterance_ls:
-            seg_list.append([each_word for each_word in jieba.cut(each_part, cut_all=False)])
+            tmp_words_ls = [each_word for each_word in jieba.cut(each_part, cut_all=False)]
+            seg_list.append(self.remove_high_freq_words(self.config.remove_words, tmp_words_ls))
         print(seg_list)
         if len(seg_list) == 1 and len(seg_list[0]) < 5:
             for each_seg_ls in seg_list:
