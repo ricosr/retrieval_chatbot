@@ -4,3 +4,4 @@ whoosh
 jieba
 scikit-learn
 python-Levenshtein
+nltk

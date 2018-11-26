@@ -19,6 +19,7 @@ class Agent:
         self.config = config
         self.punctuation_str = ''.join(config.punctuation_ls)
         self.init_all_states()
+        # self.record_chat_ls = []
 
     def init_all_states(self):
         self.retrieval = Retrieval(num_ir=NUM_OF_IR, config=self.config)
@@ -26,8 +27,14 @@ class Agent:
 
     # def select_domain(self):
     #
-    # def get_utterance_type(self, utterance):    # TODO get correct file name by utterance
-    #     return "weibo"    # return file_name  0.9
+    def get_utterance_type(self, utterance):
+        pass       # TODO: get correct file name by utterance
+                   # TODO: use word2vec to word to dimensions, then use k-means to make clusters
+                   # TODO: by this way we can accelerate searching rate and arise accuracy
+
+    def record_good_chat(self):
+        pass       # TODO: build a new thread to record conversation whose score is more than 0.95 in interval time
+                   # TODO: by this way we can get a lot of good conversations
 
     def random_chose_index(self, score_ls, max_score):
         max_score_indexes = []

@@ -8,6 +8,9 @@ import pickle
 import yaml
 import json
 
+import jieba
+import nltk
+
 from retrieval_documents import BuildIndex
 from tf_idf import TrainTfIdf
 import config
@@ -89,6 +92,25 @@ def json_to_pickle(args):   # only be used in this special format corpus of this
         os.mkdir(args.d[0])
     with open("{0}/{1}.pkl".format(args.d[0], file_name), 'wb') as fpw:
         pickle.dump(chat_ls, fpw)
+
+def count_word_frequency(file_name):
+    frequency_dict = {}
+    with open(file_name, "rb") as fp:
+        chat_ls = pickle.load(fp)
+    for each_pair in chat_ls:
+        for each_sentence in each_pair:
+            cut_words = list(jieba.cut(each_sentence, cut_all=True))
+            freq_dict_tmp = nltk.FreqDist(cut_words)
+            for word, freq in freq_dict_tmp.items():
+                if word in frequency_dict:
+                    frequency_dict[word] = frequency_dict[word] + freq
+                else:
+                    frequency_dict[word] = freq
+    print(frequency_dict)
+
+count_word_frequency("data/AI.pkl")
+
+
 
 
 
