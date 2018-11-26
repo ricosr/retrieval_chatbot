@@ -13,8 +13,6 @@ def normalization(ratio_ls):
     return [(each_ratio - min_ratio)/(max_ratio - min_ratio) for each_ratio in ratio_ls]
 
 def fuzzy_matching(utterance, context_ls):
-    # max_index = -1
-    # max_mean_ratio = 0
     ratio_ls = []
     for i in range(len(context_ls)):
         ratio_sum = 0
@@ -24,9 +22,18 @@ def fuzzy_matching(utterance, context_ls):
         ratio_sum += fuzz.token_set_ratio(utterance, context_ls[i][0])
         mean_ratio = ratio_sum / 4
         ratio_ls.append(mean_ratio)
-        # if max_mean_ratio < mean_ratio:
-        #     max_mean_ratio = mean_ratio
-        #     max_index = i
+    return normalization(ratio_ls)
+
+def fuzzy_for_domains(utterance, context_ls):
+    ratio_ls = []
+    for i in range(len(context_ls)):
+        ratio_sum = 0
+        ratio_sum += fuzz.ratio(utterance, context_ls[i][0]+context_ls[i][1])
+        ratio_sum += fuzz.partial_ratio(utterance, context_ls[i][0]+context_ls[i][1])
+        ratio_sum += fuzz.token_sort_ratio(utterance, context_ls[i][0]+context_ls[i][1])
+        ratio_sum += fuzz.token_set_ratio(utterance, context_ls[i][0]+context_ls[i][1])
+        mean_ratio = ratio_sum / 4
+        ratio_ls.append(mean_ratio)
     return normalization(ratio_ls)
 
 

@@ -8,7 +8,7 @@ from random import choice
 import jieba
 
 from retrieval_documents import Retrieval
-from fuzzy_match import fuzzy_matching
+from fuzzy_match import fuzzy_matching, fuzzy_for_domains
 from tf_idf import TfIdf
 from config import config, frequency_domain
 
@@ -33,7 +33,7 @@ class Agent:
         utterance_words = [each_word for each_word in jieba.cut(utterance, cut_all=False)]
         print(utterance_words)
         for each_word in utterance_words:
-            if each_word in self.frequency_domain_dict.keys():
+            if each_word in self.frequency_domain_dict.keys() and len(each_word) > 1:
                 print(each_word)
                 return "domains"
         return "xiaohuangji"
@@ -65,9 +65,16 @@ class Agent:
             self.retrieval.read_indexes(file_name)
             context_ls = self.retrieval.search_sentences(utterance)
             print(context_ls)
-            if not context_ls:
+            if not context_ls and file_name != "domains":
                 return "对不起亲，没听懂你说啥，你再重新组织一下语言吧。"
-            fuzzy_ratio_ls = fuzzy_matching(utterance, context_ls)
+            if not context_ls and file_name == "domains":
+                answer = self.get_answer(utterance, "weibo")
+                return answer
+
+            if file_name == "domains":
+                fuzzy_ratio_ls = fuzzy_for_domains(utterance, context_ls)
+            else:
+                fuzzy_ratio_ls = fuzzy_matching(utterance, context_ls)
             print(fuzzy_ratio_ls)
 
             self.tf_idf.select_model(file_name)
@@ -113,16 +120,8 @@ class Agent:
                     best_index = final_score_ls.index(max_score)
                 print(context_ls[best_index][0])
                 return context_ls[best_index][1]
-
-            # print(context_ls[best_index][0])
-            # print(max(final_score_ls))# 0.8 ->微博
-            # print(final_score_ls)
-
-            # print(context_ls[fuzzy_ratio_ls.index(max(fuzzy_ratio_ls))], fuzzy_ratio_ls.index(max(fuzzy_ratio_ls)))
-            # print(context_ls[tf_idf_score_ls.index(max(tf_idf_score_ls))], tf_idf_score_ls.index(max(tf_idf_score_ls)))
-            # print(best_index)
         except Exception as e:
-            pass
+            return "对不起亲，这个问题实在不晓得呀！"
 
     def start(self):
         while True:

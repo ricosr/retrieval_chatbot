@@ -41,6 +41,12 @@ parser_index.add_argument('-f', metavar='file name', type=str, default=[], nargs
 parser_index.set_defaults(func=util.add_index)
 
 
+parser_index = sub_parsers.add_parser('indexdomain', help='add indexes')
+parser_index.add_argument('-f', metavar='file name', type=str, default=[], nargs='+',
+                          help='default: None, if no assign the value, build indexes for all data files')
+parser_index.set_defaults(func=util.add_domain_index)
+
+
 parser_tfidf = sub_parsers.add_parser('tfidf', help='train TF-IDF model')
 parser_tfidf.add_argument('-f', metavar='file name', type=str, default=[], nargs='+',
                           help='default: None, if no assign the value, train TF-IDF for all data files')

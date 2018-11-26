@@ -22,6 +22,11 @@ def add_index(args):
     build_index.load_pickle(args.f[0])
     build_index.build_index()
 
+def add_domain_index(args):
+    build_index = BuildIndex(config)
+    build_index.load_pickle(args.f[0])
+    build_index.build_domains_index()
+
 def train_tf_idf(args):
     tf_idf = TrainTfIdf(config)
     tf_idf.load_pickle(args.f[0])

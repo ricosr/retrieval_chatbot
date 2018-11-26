@@ -116,3 +116,21 @@ class BuildIndex:
                     content=content[i][0].strip()
                 )
             writer.commit()
+
+    def build_domains_index(self):
+        index_config = self.config.index_dict
+        analyzer = ChineseAnalyzer()
+        schema = Schema(title=TEXT(stored=True), path=ID(stored=True), content=TEXT(stored=True, analyzer=analyzer))
+        for file_name, content in self.files_dict.items():  # content:[[question], [answer]]
+            index_path = index_config[file_name]
+            if not os.path.exists(index_path):
+                os.mkdir(index_path)
+            tmp_index = create_in(index_path, schema)
+            writer = tmp_index.writer()
+            for i in range(len(content)):
+                writer.add_document(
+                    title=content[i][1].strip(),
+                    path="/{}".format(str(i)),
+                    content=content[i][0].strip() + content[i][1].strip()
+                )
+            writer.commit()
