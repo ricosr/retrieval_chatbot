@@ -54,6 +54,7 @@ parser_tfidf.set_defaults(func=util.train_tf_idf)
 
 parser_concat_pkl = sub_parsers.add_parser('catpkl', help='concat pickle files')
 parser_concat_pkl.add_argument('-p', metavar='pickles file path', type=str, help='mandatory! the path of pickle files')
+parser_concat_pkl.add_argument('-o', metavar='pickles file name', type=str, help='mandatory! the path of out pickle files')
 parser_concat_pkl.set_defaults(func=util.combine_pickle)
 
 

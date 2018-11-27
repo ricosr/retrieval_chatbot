@@ -126,7 +126,7 @@ def combine_pickle(args):
     for each_file in dir_ls:
         with open("{}/{}".format(dir_path, each_file), 'rb') as fp:
             final_ls += pickle.load(fp)
-    with open("data/domains.pkl", 'wb') as fpw:
+    with open("data/{}".format(args.o), 'wb') as fpw:
         pickle.dump(final_ls, fpw)
 
 
