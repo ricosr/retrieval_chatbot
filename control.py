@@ -6,6 +6,8 @@
 from random import choice
 
 import jieba
+from gensim.models.doc2vec import Doc2Vec, LabeledSentence
+from sklearn.cluster import KMeans
 
 from retrieval_documents import Retrieval
 from fuzzy_match import fuzzy_matching, fuzzy_for_domains
@@ -39,7 +41,10 @@ class Agent:
         return "xiaohuangji"
 
     def get_utterance_type(self, utterance):
-        pass       # TODO: get correct file name by utterance
+        model_dm = Doc2Vec.load("model_dm")
+        tmp_vector = model_dm.infer_vector(utterance)
+        labels = kmean_model.predict(tmp_vector.reshape(1, -1))
+               # TODO: get correct file name by utterance
                    # TODO: use word2vec to word to dimensions, then use k-means to make clusters
                    # TODO: by this way we can accelerate searching rate and arise accuracy
 
