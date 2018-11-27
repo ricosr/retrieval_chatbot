@@ -1,4 +1,8 @@
-# -*-coding:utf-8-*-
+# -*- coding: utf-8 -*-
+
+# COMP5412: Chinese computing project
+# Copyright (c) by 2018 Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
+
 
 import pickle
 
@@ -12,7 +16,6 @@ def read_pickle_file(file_path):
         data_lines = pickle.load(fp)
     return data_lines
 
-#read file and seperate words
 def cut_words_write(data_lines, cut_file_name):
     with open(cut_file_name, 'w', encoding='utf-8') as pfw:
         for each_ls in data_lines:
@@ -29,12 +32,12 @@ def train_vec_model(cut_file_name, vector_size, window, vec_file):
     return model
 
 def train_cluster(data_lines, model, num_clusters, model_file):
-    km = KMeans(n_clusters=num_clusters)  #设置模型参数
+    km = KMeans(n_clusters=num_clusters)
     infered_vectors_list = []
     for text in data_lines:
         vector = model.infer_vector(text[0]+text[1])
         infered_vectors_list.append(vector)
-    result = km.fit_predict(infered_vectors_list)  #用doc2vec训练的模型产生的句向量作为k-means的输入
+    result = km.fit_predict(infered_vectors_list)
     joblib.dump(km, model_file)
     return result
 
