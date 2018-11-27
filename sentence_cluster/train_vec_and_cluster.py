@@ -8,7 +8,7 @@ from sklearn.cluster import KMeans
 from sklearn.externals import joblib
 
 def read_pickle_file(file_path):
-    with open("../data/xiaohuangji.pkl", "rb") as fp:
+    with open(file_path, "rb") as fp:
         data_lines = pickle.load(fp)
     return data_lines
 
@@ -51,8 +51,14 @@ def write_doc_cluster(num_clusters, cluster_result, data_lines, out_put_dir):
             pickle.dump(tmp_doc_cluster_ls, pfw)
 
 if __name__ == '__main__':
-    data_lines = read_pickle_file("../data/all_data.pkl")
-    cut_words_write(data_lines, 'output.seq')
-    model = train_vec_model('output.seq', 200, 4, "../vec_model/doc_vec")
-    cluster_result = train_cluster(data_lines, model, 10, "../cluster_model/kmeans.pkl")
-    write_doc_cluster(10, cluster_result, data_lines, "cluster_result")
+    # data_lines = read_pickle_file("../data/all_data.pkl")
+    # cut_words_write(data_lines, 'output.seq')
+    # model = train_vec_model('output.seq', 200, 4, "../vec_model/doc_vec")
+    # cluster_result = train_cluster(data_lines, model, 10, "../cluster_model/kmeans.pkl")
+    # write_doc_cluster(10, cluster_result, data_lines, "cluster_result")
+
+    data_lines = read_pickle_file("drive/doc2vec/all_data.pkl")
+    cut_words_write(data_lines, 'drive/doc2vec/output.seq')
+    model = train_vec_model('drive/doc2vec/output.seq', 200, 4, "drive/doc2vec/doc_vec")
+    cluster_result = train_cluster(data_lines, model, 10, "drive/doc2vec/kmeans.pkl")
+    write_doc_cluster(10, cluster_result, data_lines, "drive/doc2vec/cluster_result")

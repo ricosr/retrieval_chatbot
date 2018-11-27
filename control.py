@@ -25,13 +25,16 @@ class Agent:
         self.punctuation_str = ''.join(self.config.punctuation_ls)
         self.frequency_domain_dict = frequency_domain.frequency_dict
         self.cluster_md = "cluster_model/kmeans.pkl"
+        self.vec_md = "vec_model/doc_vec"
         self.init_all_states()
         # self.record_chat_ls = []
 
     def init_all_states(self):
         self.retrieval = Retrieval(num_ir=NUM_OF_IR, config=self.config)
         self.tf_idf = TfIdf(self.config)
-        self.cluster_model = joblib.load(self.cluster_md)
+        # TODO: wait for models
+        # self.cluster_model = joblib.load(self.cluster_md)
+        # self.vec_model = Doc2Vec.load(self.vec_md)
         jieba.initialize()
 
     def select_domain(self, utterance):
@@ -44,10 +47,11 @@ class Agent:
         return "xiaohuangji"
 
     def get_utterance_type(self, utterance):
-        model_dm = Doc2Vec.load("model_dm")
-        tmp_vector = model_dm.infer_vector(utterance)
-        label = self.cluster_model.predict(tmp_vector.reshape(1, -1))
-        return self.config.cluster_file[label]
+        pass
+        # TODO: wait for models
+        # tmp_vector = self.vec_model.infer_vector(utterance)
+        # label = self.cluster_model.predict(tmp_vector.reshape(1, -1))
+        # return self.config.cluster_file[label]
 
     def record_good_chat(self):
         pass       # TODO: build a new thread to record conversation whose score is more than 0.95 in interval time
@@ -141,7 +145,6 @@ class Agent:
             print(context_ls)
             if not context_ls:
                 return "对不起亲，没听懂你说啥，你再重新组织一下语言吧。"
-
 
             fuzzy_ratio_ls = fuzzy_matching(utterance, context_ls)
 
