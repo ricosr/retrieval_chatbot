@@ -34,6 +34,8 @@ punctuation_ls = ['`', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_
                   '！', '·', '￥', '……', '（', '）', '——', '【', '】', '、', '：', '；', '’', '‘', '“',
                   '”', '《', '，', '。', '》', '？']
 
+cluster_file = {1: "cluster_1.pkl"}
+
 remove_words = []
 
 # TODO: add function to create config file

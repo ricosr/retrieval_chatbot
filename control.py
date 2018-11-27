@@ -7,6 +7,7 @@ from random import choice
 
 import jieba
 from gensim.models.doc2vec import Doc2Vec, LabeledSentence
+from sklearn.externals import joblib
 from sklearn.cluster import KMeans
 
 from retrieval_documents import Retrieval
@@ -23,12 +24,14 @@ class Agent:
         self.config = config
         self.punctuation_str = ''.join(self.config.punctuation_ls)
         self.frequency_domain_dict = frequency_domain.frequency_dict
+        self.cluster_md = "cluster_model/kmeans.pkl"
         self.init_all_states()
         # self.record_chat_ls = []
 
     def init_all_states(self):
         self.retrieval = Retrieval(num_ir=NUM_OF_IR, config=self.config)
         self.tf_idf = TfIdf(self.config)
+        self.cluster_model = joblib.load(self.cluster_md)
         jieba.initialize()
 
     def select_domain(self, utterance):
@@ -43,10 +46,8 @@ class Agent:
     def get_utterance_type(self, utterance):
         model_dm = Doc2Vec.load("model_dm")
         tmp_vector = model_dm.infer_vector(utterance)
-        labels = kmean_model.predict(tmp_vector.reshape(1, -1))
-               # TODO: get correct file name by utterance
-                   # TODO: use word2vec to word to dimensions, then use k-means to make clusters
-                   # TODO: by this way we can accelerate searching rate and arise accuracy
+        label = self.cluster_model.predict(tmp_vector.reshape(1, -1))
+        return self.config.cluster_file[label]
 
     def record_good_chat(self):
         pass       # TODO: build a new thread to record conversation whose score is more than 0.95 in interval time
@@ -61,6 +62,7 @@ class Agent:
 
     def get_answer(self, utterance, file_name=None):
         try:
+            # file_name = self.get_utterance_type(utterance)
             utterance = utterance.rstrip(self.punctuation_str)
             if not file_name:
                 file_name = self.select_domain(utterance)
