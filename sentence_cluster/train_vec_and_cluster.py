@@ -8,7 +8,7 @@ from sklearn.cluster import KMeans
 
 def read_pickle_file(file_path):
     with open("../data/xiaohuangji.pkl", "rb") as fp:
-        data_lines = pickle.load(fp)[:1000]
+        data_lines = pickle.load(fp)
     return data_lines
 
 #read file and seperate words
@@ -20,11 +20,11 @@ def cut_words_write(data_lines, cut_file_name):
             seg_list = jieba.cut(line)
             pfw.write(' '.join(seg_list)+'\n')
 
-def train_vec_model(cut_file_name):
+def train_vec_model(cut_file_name, vector_size, window, vec_file):
     sentences = gensim.models.doc2vec.TaggedLineDocument(cut_file_name)
-    model = gensim.models.Doc2Vec(sentences, vector_size=300, window=5)
+    model = gensim.models.Doc2Vec(sentences, vector_size=vector_size, window=window)
     model.train(sentences, epochs=20, total_examples=model.corpus_count)
-    model.save('model_dm')
+    model.save(vec_file)
     return model
 
 def train_cluster(data_lines, model, num_clusters):
@@ -52,6 +52,6 @@ def write_doc_cluster(num_clusters, cluster_result, data_lines, out_put_dir):
 
 data_lines = read_pickle_file("../data/all_data.pkl")
 cut_words_write(data_lines, 'output.seq')
-model = train_vec_model('output.seq')
+model = train_vec_model('output.seq', 200, 4, "../vec_model/doc_vec")
 cluster_result = train_cluster(data_lines, model, 10)
 write_doc_cluster(10, cluster_result, data_lines, "cluster_result")
