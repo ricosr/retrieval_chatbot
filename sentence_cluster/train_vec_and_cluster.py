@@ -50,9 +50,9 @@ def write_doc_cluster(num_clusters, cluster_result, data_lines, out_put_dir):
                     tmp_doc_cluster_ls.append([each_line[0], each_line[1]])
             pickle.dump(tmp_doc_cluster_ls, pfw)
 
-
-data_lines = read_pickle_file("../data/all_data.pkl")
-cut_words_write(data_lines, 'output.seq')
-model = train_vec_model('output.seq', 200, 4, "../vec_model/doc_vec")
-cluster_result = train_cluster(data_lines, model, 10, "../cluster_model/kmeans.pkl")
-write_doc_cluster(10, cluster_result, data_lines, "cluster_result")
+if __name__ == '__main__':
+    data_lines = read_pickle_file("../data/all_data.pkl")
+    cut_words_write(data_lines, 'output.seq')
+    model = train_vec_model('output.seq', 200, 4, "../vec_model/doc_vec")
+    cluster_result = train_cluster(data_lines, model, 10, "../cluster_model/kmeans.pkl")
+    write_doc_cluster(10, cluster_result, data_lines, "cluster_result")
