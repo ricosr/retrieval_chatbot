@@ -33,8 +33,8 @@ class Agent:
         self.retrieval = Retrieval(num_ir=NUM_OF_IR, config=self.config)
         self.tf_idf = TfIdf(self.config)
         # TODO: wait for models
-        # self.cluster_model = joblib.load(self.cluster_md)
-        # self.vec_model = Doc2Vec.load(self.vec_md)
+        self.cluster_model = joblib.load(self.cluster_md)
+        self.vec_model = Doc2Vec.load(self.vec_md)
         jieba.initialize()
 
     def select_domain(self, utterance):
@@ -47,11 +47,10 @@ class Agent:
         return "xiaohuangji"
 
     def get_utterance_type(self, utterance):
-        pass
         # TODO: wait for models
-        # tmp_vector = self.vec_model.infer_vector(utterance)
-        # label = self.cluster_model.predict(tmp_vector.reshape(1, -1))
-        # return self.config.cluster_file[label]
+        tmp_vector = self.vec_model.infer_vector(utterance)
+        label = self.cluster_model.predict(tmp_vector.reshape(1, -1))
+        return self.config.cluster_file[label]
 
     def record_good_chat(self):
         pass       # TODO: build a new thread to record conversation whose score is more than 0.95 in interval time

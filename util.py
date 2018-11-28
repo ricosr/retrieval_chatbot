@@ -19,7 +19,7 @@ from config import config
 # pickle file of conversations must exist, config.file_dict and config.index_dict must be right
 def add_index(args):
     build_index = BuildIndex(config)
-    build_index.load_pickle(args.f[0])
+    build_index.load_pickle(args.f)
     build_index.build_index()
 
 def add_domain_index(args):
@@ -29,7 +29,7 @@ def add_domain_index(args):
 
 def train_tf_idf(args):
     tf_idf = TrainTfIdf(config)
-    tf_idf.load_pickle(args.f[0])
+    tf_idf.load_pickle(args.f)
     tf_idf.train()
 
 def yml_to_pickle(args):
@@ -117,7 +117,6 @@ def count_none_frequency(file_name):   # just save none
                     frequency_dict[word] = freq
     with open("frequency_domain.py", "w", encoding="utf-8") as fwp:
         fwp.write("frequency_dict = {}".format(str(frequency_dict)))
-
 
 def combine_pickle(args):
     dir_path = args.p
