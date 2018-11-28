@@ -63,15 +63,16 @@ if __name__ == '__main__':
     # cluster_result = train_cluster(data_lines, model, 10, "../cluster_model/kmeans.pkl")
     # write_doc_cluster(10, cluster_result, data_lines, "cluster_result")
 
-    data_lines = read_pickle_file("data/all_data.pkl")
-    # cut_words_write(data_lines, 'output.seq')
-    # model = train_vec_model('output.seq', 100, 3, "doc_vec")
-    print("start load....")
-    model = gensim.models.Doc2Vec.load("data/doc_vec")
+
+    data_lines = read_pickle_file("/data/all_data.pkl")
+    cut_words_write(data_lines, 'output.seq')
+    model = train_vec_model('output.seq', 200, 4, "doc_vec")
+    # print("start load....")
+    # model = gensim.models.Doc2Vec.load("/data/doc_vec")
     # print(len(model.infer_vector(["你是谁"])))
     # print(len(model.infer_vector(["你是男的还是女的"])))
 
     # model = PCA(5).fit_transform(np.array(model))
-    print("load end...")
-    cluster_result = train_cluster(data_lines, model, 5, "kmeans.pkl")
+    # print("load end...")
+    cluster_result = train_cluster(data_lines, model, 10, "kmeans.pkl")
     write_doc_cluster(5, cluster_result, data_lines, "cluster_result")

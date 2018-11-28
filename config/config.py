@@ -51,7 +51,7 @@
 # }
 
 
-cluster_file = {0: "cluster_0.pkl", 1: "cluster_1.pkl", 2: "cluster_2.pkl", 3: "cluster_3.pkl", 4: "cluster_4.pkl"}
+cluster_file = {0: "cluster_0", 1: "cluster_1", 2: "cluster_2", 3: "cluster_3", 4: "cluster_4"}
 
 file_dict = {"cluster_0": "data/cluster_0.pkl", "cluster_1": "data/cluster_1.pkl", "cluster_2": "data/cluster_2.pkl",
              "cluster_3": "data/cluster_3.pkl", "cluster_4": "data/cluster_4.pkl"}

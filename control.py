@@ -50,7 +50,7 @@ class Agent:
         # TODO: wait for models
         tmp_vector = self.vec_model.infer_vector(utterance)
         label = self.cluster_model.predict(tmp_vector.reshape(1, -1))
-        return self.config.cluster_file[label]
+        return self.config.cluster_file[label[0]]
 
     def record_good_chat(self):
         pass       # TODO: build a new thread to record conversation whose score is more than 0.95 in interval time
@@ -192,7 +192,7 @@ class Agent:
             utterance = input(">>>")
             if utterance.strip() == "exit1":
                 break
-            answer = self.get_answer(utterance)
+            answer = self.get_answer2(utterance)
             print("<<<{}".format(answer))
 
 
