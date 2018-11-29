@@ -8,16 +8,18 @@ import pickle
 import control
 
 
-test_num = 500
+test_num = 30
+interval_num = 5
+step = 2
 
 def create_test_data(pickle_file):
     with open(pickle_file, "rb") as pfw:
         data_lines = pickle.load(pfw)
     data_length = len(data_lines)
-    interval = int(data_length/5)
-    test_data_ls = data_lines[0:100] + data_lines[interval: interval+100]
-    test_data_ls += data_lines[interval*2: interval*2+100] + data_lines[interval*3: interval*3+100]
-    test_data_ls += data_lines[interval*4: interval*4+100]
+    interval = int(data_length/interval_num)
+    test_data_ls = data_lines[0:step] + data_lines[interval: interval+step]
+    test_data_ls += data_lines[interval*2: interval*2+step] + data_lines[interval*3: interval*3+step]
+    test_data_ls += data_lines[interval*4: interval*4+step]
     return test_data_ls
     pass
 
@@ -35,7 +37,7 @@ while True:
     exe_obj.fuzzy_weight = fuzzy_weight
     exe_obj.tf_idf_weight = tf_idf_weight
     for each_data in test_data_ls:
-        answer = exe_obj.test(each_data[0])
+        answer, score = exe_obj.api(each_data[0])
         if answer.strip() == each_data[1].strip():
             right_times += 1
     print("fuzzy_weight={}, tf_idf_weight={}".format(fuzzy_weight, tf_idf_weight))

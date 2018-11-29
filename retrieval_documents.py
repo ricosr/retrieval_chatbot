@@ -53,7 +53,7 @@ class Retrieval:
         for each_part in utterance_ls:
             tmp_words_ls = [each_word for each_word in jieba.cut(each_part, cut_all=False)]
             seg_list.append(self.remove_high_freq_words(self.config.remove_words, tmp_words_ls))
-        print(seg_list)
+        # print(seg_list)
         if len(seg_list) == 1 and len(seg_list[0]) < 5:
             for each_seg_ls in seg_list:
                 self.tmp_seg_ls = []
@@ -68,7 +68,7 @@ class Retrieval:
                 if len(self.tmp_seg_ls) > 2:
                     self.tmp_seg_ls.remove(sorted(self.tmp_seg_ls, key=lambda k: len(k), reverse=True)[0])
                 new_seg_ls.append(self.tmp_seg_ls)
-        print(new_seg_ls)
+        # print(new_seg_ls)
         for each_new_seg in new_seg_ls:
             with self.current_index.searcher() as searcher:
                 for each_seg in each_new_seg:
