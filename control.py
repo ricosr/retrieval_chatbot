@@ -27,6 +27,8 @@ class Agent:
         self.cluster_md = "cluster_model/kmeans.pkl"
         self.vec_md = "vec_model/doc_vec"
         self.init_all_states()
+        self.fuzzy_weight = 0.7
+        self.tf_idf_weight = 0.3
         # self.record_chat_ls = []
 
     def init_all_states(self):
@@ -50,6 +52,7 @@ class Agent:
         # TODO: wait for models
         tmp_vector = self.vec_model.infer_vector(utterance)
         label = self.cluster_model.predict(tmp_vector.reshape(1, -1))
+        print(label)
         return self.config.cluster_file[label[0]]
 
     def record_good_chat(self):
@@ -113,7 +116,7 @@ class Agent:
                 print(context_ls[best_index][0])
                 return context_ls[best_index][1]
 
-            final_score_ls = [(fuzzy_ratio * 0.7 + tf_tdf_score * 0.3) for fuzzy_ratio, tf_tdf_score in
+            final_score_ls = [(fuzzy_ratio * self.fuzzy_weight + tf_tdf_score * self.tf_idf_weight) for fuzzy_ratio, tf_tdf_score in
                               zip(fuzzy_ratio_ls, tf_idf_score_ls)]
             # TODO: find a suitable weight
             print(final_score_ls)
@@ -173,7 +176,7 @@ class Agent:
                 print(context_ls[best_index][0])
                 return context_ls[best_index][1]
 
-            final_score_ls = [(fuzzy_ratio * 0.7 + tf_tdf_score * 0.3) for fuzzy_ratio, tf_tdf_score in
+            final_score_ls = [(fuzzy_ratio * self.fuzzy_weight + tf_tdf_score * self.tf_idf_weight) for fuzzy_ratio, tf_tdf_score in
                               zip(fuzzy_ratio_ls, tf_idf_score_ls)]
             # TODO: find a suitable weight
 
@@ -186,6 +189,10 @@ class Agent:
             return context_ls[best_index][1]
         except Exception as e:
             return "对不起亲，这个问题实在不晓得呀！"
+
+    def test(self, utterance):
+        answer = self.get_answer2(utterance)
+        return answer
 
     def start(self):
         while True:

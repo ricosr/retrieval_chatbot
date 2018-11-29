@@ -29,38 +29,38 @@
 #              "sports": "model/sports.pkl", "trivia": "model/trivia.pkl", "xiaohuangji": "model/xiaohuangji.pkl",
 #              "weibo": "model/weibo.pkl", "domains": "model/domains.pkl"}
 
-# cluster_file = {0: "cluster_0.pkl", 1: "cluster_1.pkl", 2: "cluster_2.pkl", 3: "cluster_3.pkl", 4: "cluster_4.pkl",
-#                 5: "cluster_5.pkl", 6: "cluster_6.pkl", 7: "cluster_7.pkl", 8: "cluster_8.pkl", 9: "cluster_9.pkl"}
-#
-# file_dict = {"cluster_0": "data/cluster_0.pkl", "cluster_1": "data/cluster_1.pkl", "cluster_2": "data/cluster_2.pkl",
-#              "cluster_3": "data/cluster_3.pkl", "cluster_4": "data/cluster_4.pkl", "cluster_5": "data/cluster_5.pkl",
-#              "cluster_6": "data/cluster_6.pkl", "cluster_7": "data/cluster_7.pkl", "cluster_8": "data/cluster_8.pkl",
-#              "cluster_9": "data/cluster_9.pkl"
-# }
-#
-# index_dict = {"cluster_0": "index/cluster_0", "cluster_1": "index/cluster_1", "cluster_2": "index/cluster_2",
-#               "cluster_3": "index/cluster_3", "cluster_4": "index/cluster_4", "cluster_5": "index/cluster_5",
-#               "cluster_6": "index/cluster_6", "cluster_7": "index/cluster_7", "cluster_8": "index/cluster_8",
-#               "cluster_9": "index/cluster_9"
-# }
-#
-# model_dict = {"cluster_0": "model/cluster_0.pkl", "cluster_1": "model/cluster_1.pkl", "cluster_2": "model/cluster_2.pkl",
-#               "cluster_3": "model/cluster_3.pkl", "cluster_4": "model/cluster_4.pkl", "cluster_5": "model/cluster_5.pkl",
-#               "cluster_6": "model/cluster_6.pkl", "cluster_7": "model/cluster_7.pkl", "cluster_8": "model/cluster_8.pkl",
-#               "cluster_9": "model/cluster_9.pkl"
-# }
-
-
-cluster_file = {0: "cluster_0", 1: "cluster_1", 2: "cluster_2", 3: "cluster_3", 4: "cluster_4"}
+cluster_file = {0: "cluster_0", 1: "cluster_1", 2: "cluster_2", 3: "cluster_3", 4: "cluster_4",
+                5: "cluster_5", 6: "cluster_6", 7: "cluster_7", 8: "cluster_8", 9: "cluster_9"
+                }
 
 file_dict = {"cluster_0": "data/cluster_0.pkl", "cluster_1": "data/cluster_1.pkl", "cluster_2": "data/cluster_2.pkl",
-             "cluster_3": "data/cluster_3.pkl", "cluster_4": "data/cluster_4.pkl"}
+             "cluster_3": "data/cluster_3.pkl", "cluster_4": "data/cluster_4.pkl", "cluster_5": "data/cluster_5.pkl",
+             "cluster_6": "data/cluster_6.pkl", "cluster_7": "data/cluster_7.pkl", "cluster_8": "data/cluster_8.pkl",
+             "cluster_9": "data/cluster_9.pkl"
+             }
 
 index_dict = {"cluster_0": "index/cluster_0", "cluster_1": "index/cluster_1", "cluster_2": "index/cluster_2",
-              "cluster_3": "index/cluster_3", "cluster_4": "index/cluster_4"}
+              "cluster_3": "index/cluster_3", "cluster_4": "index/cluster_4", "cluster_5": "index/cluster_5",
+              "cluster_6": "index/cluster_6", "cluster_7": "index/cluster_7", "cluster_8": "index/cluster_8",
+              "cluster_9": "index/cluster_9"
+              }
 
 model_dict = {"cluster_0": "model/cluster_0.pkl", "cluster_1": "model/cluster_1.pkl", "cluster_2": "model/cluster_2.pkl",
-              "cluster_3": "model/cluster_3.pkl", "cluster_4": "model/cluster_4.pkl"}
+              "cluster_3": "model/cluster_3.pkl", "cluster_4": "model/cluster_4.pkl", "cluster_5": "model/cluster_5.pkl",
+              "cluster_6": "model/cluster_6.pkl", "cluster_7": "model/cluster_7.pkl", "cluster_8": "model/cluster_8.pkl",
+              "cluster_9": "model/cluster_9.pkl"
+              }
+
+# cluster_file = {0: "cluster_0", 1: "cluster_1", 2: "cluster_2", 3: "cluster_3", 4: "cluster_4"}
+#
+# file_dict = {"cluster_0": "data/cluster_0.pkl", "cluster_1": "data/cluster_1.pkl", "cluster_2": "data/cluster_2.pkl",
+#              "cluster_3": "data/cluster_3.pkl", "cluster_4": "data/cluster_4.pkl"}
+#
+# index_dict = {"cluster_0": "index/cluster_0", "cluster_1": "index/cluster_1", "cluster_2": "index/cluster_2",
+#               "cluster_3": "index/cluster_3", "cluster_4": "index/cluster_4"}
+#
+# model_dict = {"cluster_0": "model/cluster_0.pkl", "cluster_1": "model/cluster_1.pkl", "cluster_2": "model/cluster_2.pkl",
+#               "cluster_3": "model/cluster_3.pkl", "cluster_4": "model/cluster_4.pkl"}
 
 punctuation_ls = ['`', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '+', '=',
                   '{', '[', '}', ']', '|', '\\', ':', ';', '\'', '\"', '<', ',', '>', '.', '?', '/',
