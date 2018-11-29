@@ -146,7 +146,7 @@ class Agent:
             context_ls = self.retrieval.search_sentences(utterance)
             # print(context_ls)
             if not context_ls:
-                return "对不起亲，没听懂你说啥，你再重新组织一下语言吧。"
+                return "", 0
 
             fuzzy_ratio_ls = fuzzy_matching(utterance, context_ls)
 
@@ -169,12 +169,12 @@ class Agent:
             if fuzzy_best_content == utterance or utterance in fuzzy_best_content:
                 best_index = fuzzy_best_index
                 # print(context_ls[best_index][0])
-                return context_ls[best_index][1]
+                return context_ls[best_index][1], max(fuzzy_ratio_ls)
 
             if tfidf_best_content == utterance or utterance in tfidf_best_content:
                 best_index = tftdf_best_index
                 # print(context_ls[best_index][0])
-                return context_ls[best_index][1]
+                return context_ls[best_index][1], max(tf_idf_score_ls)
 
             final_score_ls = [(fuzzy_ratio * self.fuzzy_weight + tf_tdf_score * self.tf_idf_weight) for fuzzy_ratio, tf_tdf_score in
                               zip(fuzzy_ratio_ls, tf_idf_score_ls)]
@@ -188,7 +188,7 @@ class Agent:
             # print(context_ls[best_index][0])
             return context_ls[best_index][1], max_score
         except Exception as e:
-            return "对不起亲，这个问题实在不晓得呀！"
+            return "", 0
 
     def test(self, utterance):
         answer = self.get_answer2(utterance)
@@ -207,6 +207,6 @@ class Agent:
         return [answer, score]
 
 
-if __name__ == '__main__':
-    agent = Agent()
-    agent.start()
+# if __name__ == '__main__':
+#     agent = Agent()
+#     agent.start()
