@@ -51,6 +51,10 @@ model_dict = {"cluster_0": "model/cluster_0.pkl", "cluster_1": "model/cluster_1.
               "cluster_9": "model/cluster_9.pkl"
               }
 
+cluster_model = "cluster_model/kmeans.pkl"
+
+doc_vector_model = "vec_model/doc_vec"
+
 # cluster_file = {0: "cluster_0", 1: "cluster_1", 2: "cluster_2", 3: "cluster_3", 4: "cluster_4"}
 #
 # file_dict = {"cluster_0": "data/cluster_0.pkl", "cluster_1": "data/cluster_1.pkl", "cluster_2": "data/cluster_2.pkl",

@@ -24,8 +24,8 @@ class Agent:
         self.config = config
         self.punctuation_str = ''.join(self.config.punctuation_ls)
         self.frequency_domain_dict = frequency_domain.frequency_dict
-        self.cluster_md = "cluster_model/kmeans.pkl"
-        self.vec_md = "vec_model/doc_vec"
+        self.cluster_md = self.config.cluster_model
+        self.vec_md = self.config.doc_vector_model
         self.init_all_states()
         self.fuzzy_weight = 0.7
         self.tf_idf_weight = 0.3

@@ -35,7 +35,7 @@ def train_cluster(data_lines, model, num_clusters, model_file):
     km = MiniBatchKMeans(n_clusters=num_clusters)
     infered_vectors_list = []
     for text in data_lines:
-        vector = model.infer_vector(text[0]+text[1])
+        vector = model.inferc_vector(text[0]+text[1])
         infered_vectors_list.append(vector)
     result = km.fit_predict(infered_vectors_list)
     joblib.dump(km, model_file)

@@ -21,10 +21,9 @@ def create_test_data(pickle_file):
     test_data_ls += data_lines[interval*2: interval*2+step] + data_lines[interval*3: interval*3+step]
     test_data_ls += data_lines[interval*4: interval*4+step]
     return test_data_ls
-    pass
 
-fuzzy_weight = 0.9
-tf_idf_weight = 0
+fuzzy_weight = 0.58
+tf_idf_weight = 0.42
 
 while True:
     right_times = 0
