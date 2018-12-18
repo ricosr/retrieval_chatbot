@@ -25,8 +25,8 @@ class Agent:
         self.cluster_md = self.config.cluster_model
         self.vec_md = self.config.doc_vector_model
         self.init_all_states()
-        self.fuzzy_weight = 0.7
-        self.tf_idf_weight = 0.3
+        self.fuzzy_weight = 0.15
+        self.tf_idf_weight = 0.85
         # self.record_chat_ls = [] # TODO
 
     def init_all_states(self):
