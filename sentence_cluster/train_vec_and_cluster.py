@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# COMP5412: Chinese computing project
 # Copyright (c) by 2018 Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 
