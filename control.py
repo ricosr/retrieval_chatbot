@@ -8,7 +8,6 @@ from random import choice
 import jieba
 from gensim.models.doc2vec import Doc2Vec, LabeledSentence
 from sklearn.externals import joblib
-from sklearn.cluster import KMeans
 
 from retrieval_documents import Retrieval
 from fuzzy_match import fuzzy_matching, fuzzy_for_domains
@@ -29,7 +28,7 @@ class Agent:
         self.init_all_states()
         self.fuzzy_weight = 0.7
         self.tf_idf_weight = 0.3
-        # self.record_chat_ls = []
+        # self.record_chat_ls = [] # TODO
 
     def init_all_states(self):
         self.retrieval = Retrieval(num_ir=NUM_OF_IR, config=self.config)
@@ -41,10 +40,8 @@ class Agent:
 
     def select_domain(self, utterance):
         utterance_words = [each_word for each_word in jieba.cut(utterance, cut_all=False)]
-        # print(utterance_words)
         for each_word in utterance_words:
             if each_word in self.frequency_domain_dict.keys() and len(each_word) > 1:
-                # print(each_word)
                 return "domains"
         return "xiaohuangji"
 
@@ -52,7 +49,6 @@ class Agent:
         # TODO: wait for models
         tmp_vector = self.vec_model.infer_vector(utterance)
         label = self.cluster_model.predict(tmp_vector.reshape(1, -1))
-        # print(label)
         return self.config.cluster_file[label[0]]
 
     def record_good_chat(self):
@@ -68,16 +64,12 @@ class Agent:
 
     def get_answer(self, utterance, file_name=None):
         try:
-            # file_name = self.get_utterance_type(utterance)
             utterance = utterance.rstrip(self.punctuation_str)
             if not file_name:
                 file_name = self.select_domain(utterance)
-            # print(file_name)
 
-            # file_name = self.get_utterance_type(utterance)
             self.retrieval.read_indexes(file_name)
             context_ls = self.retrieval.search_sentences(utterance)
-            # print(context_ls)
             if not context_ls and file_name != "domains":
                 return "对不起亲，没听懂你说啥，你再重新组织一下语言吧。"
             if not context_ls and file_name == "domains":
@@ -88,7 +80,6 @@ class Agent:
                 fuzzy_ratio_ls = fuzzy_for_domains(utterance, context_ls)
             else:
                 fuzzy_ratio_ls = fuzzy_matching(utterance, context_ls)
-            # print(fuzzy_ratio_ls)
 
             self.tf_idf.select_model(file_name)
             self.tf_idf.predict_tfidf(utterance, context_ls)
@@ -108,30 +99,24 @@ class Agent:
             tfidf_best_content = context_ls[tftdf_best_index][0].rstrip(self.punctuation_str)
             if fuzzy_best_content == utterance or utterance in fuzzy_best_content:
                 best_index = fuzzy_best_index
-                # print(context_ls[best_index][0])
                 return context_ls[best_index][1]
 
             if tfidf_best_content == utterance or utterance in tfidf_best_content:
                 best_index = tftdf_best_index
-                # print(context_ls[best_index][0])
                 return context_ls[best_index][1]
 
             final_score_ls = [(fuzzy_ratio * self.fuzzy_weight + tf_tdf_score * self.tf_idf_weight) for fuzzy_ratio, tf_tdf_score in
                               zip(fuzzy_ratio_ls, tf_idf_score_ls)]
             # TODO: find a suitable weight
-            # print(final_score_ls)
             if max(final_score_ls) < 0.85 and file_name != "weibo" and file_name != "domains": # TODO: ugly code
-                # print(max(final_score_ls))
                 answer = self.get_answer(utterance, "weibo")
                 return answer
             else:
-                # print(max(final_score_ls))
                 max_score = max(final_score_ls)
                 if final_score_ls.count(max_score) > 1:
                     best_index = self.random_chose_index(final_score_ls, max_score)
                 else:
                     best_index = final_score_ls.index(max_score)
-                # print(context_ls[best_index][0])
                 return context_ls[best_index][1]
         except Exception as e:
             return "对不起亲，这个问题实在不晓得呀！"
@@ -140,11 +125,9 @@ class Agent:
         try:
             utterance = utterance.rstrip(self.punctuation_str)
             file_name = self.get_utterance_type(utterance)
-            # print(file_name)
 
             self.retrieval.read_indexes(file_name)
             context_ls = self.retrieval.search_sentences(utterance)
-            # print(context_ls)
             if not context_ls:
                 return "", 0
 
@@ -168,12 +151,10 @@ class Agent:
             tfidf_best_content = context_ls[tftdf_best_index][0].rstrip(self.punctuation_str)
             if fuzzy_best_content == utterance or utterance in fuzzy_best_content:
                 best_index = fuzzy_best_index
-                # print(context_ls[best_index][0])
                 return context_ls[best_index][1], max(fuzzy_ratio_ls)
 
             if tfidf_best_content == utterance or utterance in tfidf_best_content:
                 best_index = tftdf_best_index
-                # print(context_ls[best_index][0])
                 return context_ls[best_index][1], max(tf_idf_score_ls)
 
             final_score_ls = [(fuzzy_ratio * self.fuzzy_weight + tf_tdf_score * self.tf_idf_weight) for fuzzy_ratio, tf_tdf_score in
@@ -185,7 +166,6 @@ class Agent:
                 best_index = self.random_chose_index(final_score_ls, max_score)
             else:
                 best_index = final_score_ls.index(max_score)
-            # print(context_ls[best_index][0])
             return context_ls[best_index][1], max_score
         except Exception as e:
             return "", 0

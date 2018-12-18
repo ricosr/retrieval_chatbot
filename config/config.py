@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# COMP5412: Chinese computing project
 # Copyright (c) 2018 by Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 
@@ -55,6 +54,13 @@ cluster_model = "cluster_model/kmeans.pkl"
 
 doc_vector_model = "vec_model/doc_vec"
 
+punctuation_ls = ['`', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '+', '=',
+                  '{', '[', '}', ']', '|', '\\', ':', ';', '\'', '\"', '<', ',', '>', '.', '?', '/',
+                  '！', '·', '￥', '……', '（', '）', '——', '【', '】', '、', '：', '；', '’', '‘', '“',
+                  '”', '《', '，', '。', '》', '？']
+
+
+
 # cluster_file = {0: "cluster_0", 1: "cluster_1", 2: "cluster_2", 3: "cluster_3", 4: "cluster_4"}
 #
 # file_dict = {"cluster_0": "data/cluster_0.pkl", "cluster_1": "data/cluster_1.pkl", "cluster_2": "data/cluster_2.pkl",
@@ -66,10 +72,7 @@ doc_vector_model = "vec_model/doc_vec"
 # model_dict = {"cluster_0": "model/cluster_0.pkl", "cluster_1": "model/cluster_1.pkl", "cluster_2": "model/cluster_2.pkl",
 #               "cluster_3": "model/cluster_3.pkl", "cluster_4": "model/cluster_4.pkl"}
 
-punctuation_ls = ['`', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '+', '=',
-                  '{', '[', '}', ']', '|', '\\', ':', ';', '\'', '\"', '<', ',', '>', '.', '?', '/',
-                  '！', '·', '￥', '……', '（', '）', '——', '【', '】', '、', '：', '；', '’', '‘', '“',
-                  '”', '《', '，', '。', '》', '？']
+
 
 
 remove_words = []
