@@ -11,6 +11,7 @@ test_num = 500
 interval_num = 5
 step = 100
 
+
 def create_test_data(pickle_file):
     with open(pickle_file, "rb") as pfw:
         data_lines = pickle.load(pfw)
@@ -40,4 +41,3 @@ while True:
             right_times += 1
     print("fuzzy_weight={}, tf_idf_weight={}".format(fuzzy_weight, tf_idf_weight))
     print("right times: {}, accuracy rate: {}".format(right_times, right_times/test_num))
-

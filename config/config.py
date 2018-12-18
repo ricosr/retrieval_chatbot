@@ -59,22 +59,5 @@ punctuation_ls = ['`', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_
                   '！', '·', '￥', '……', '（', '）', '——', '【', '】', '、', '：', '；', '’', '‘', '“',
                   '”', '《', '，', '。', '》', '？']
 
-
-
-# cluster_file = {0: "cluster_0", 1: "cluster_1", 2: "cluster_2", 3: "cluster_3", 4: "cluster_4"}
-#
-# file_dict = {"cluster_0": "data/cluster_0.pkl", "cluster_1": "data/cluster_1.pkl", "cluster_2": "data/cluster_2.pkl",
-#              "cluster_3": "data/cluster_3.pkl", "cluster_4": "data/cluster_4.pkl"}
-#
-# index_dict = {"cluster_0": "index/cluster_0", "cluster_1": "index/cluster_1", "cluster_2": "index/cluster_2",
-#               "cluster_3": "index/cluster_3", "cluster_4": "index/cluster_4"}
-#
-# model_dict = {"cluster_0": "model/cluster_0.pkl", "cluster_1": "model/cluster_1.pkl", "cluster_2": "model/cluster_2.pkl",
-#               "cluster_3": "model/cluster_3.pkl", "cluster_4": "model/cluster_4.pkl"}
-
-
-
-
 remove_words = []
-
 # TODO: add function to create config file

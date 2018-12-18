@@ -13,7 +13,7 @@ from fuzzy_match import fuzzy_matching, fuzzy_for_domains
 from tf_idf import TfIdf
 from config import config, frequency_domain
 
-# TODO: distribute message by threading or tornado
+# TODO: distribute message by threading or tornado or Gevent(no Windows)
 
 NUM_OF_IR = 2
 
@@ -61,66 +61,66 @@ class Agent:
                 max_score_indexes.append(i)
         return choice(max_score_indexes)
 
+    # def get_answer_domain(self, utterance, file_name=None):
+    #     try:
+    #         utterance = utterance.rstrip(self.punctuation_str)
+    #         if not file_name:
+    #             file_name = self.select_domain(utterance)
+    #
+    #         self.retrieval.read_indexes(file_name)
+    #         context_ls = self.retrieval.search_sentences(utterance)
+    #         if not context_ls and file_name != "domains":
+    #             return "对不起亲，没听懂你说啥，你再重新组织一下语言吧。"
+    #         if not context_ls and file_name == "domains":
+    #             answer = self.get_answer(utterance, "weibo")
+    #             return answer
+    #
+    #         if file_name == "domains":
+    #             fuzzy_ratio_ls = fuzzy_for_domains(utterance, context_ls)
+    #         else:
+    #             fuzzy_ratio_ls = fuzzy_matching(utterance, context_ls)
+    #
+    #         self.tf_idf.select_model(file_name)
+    #         self.tf_idf.predict_tfidf(utterance, context_ls)
+    #         tf_idf_score_ls = self.tf_idf.calculate_distances()
+    #
+    #         if fuzzy_ratio_ls.count(max(fuzzy_ratio_ls)) > 1:
+    #             fuzzy_best_index = self.random_chose_index(fuzzy_ratio_ls, max(fuzzy_ratio_ls))
+    #         else:
+    #             fuzzy_best_index = fuzzy_ratio_ls.index(max(fuzzy_ratio_ls))
+    #
+    #         if tf_idf_score_ls.count(max(tf_idf_score_ls)) > 1:
+    #             tftdf_best_index = self.random_chose_index(tf_idf_score_ls, max(tf_idf_score_ls))
+    #         else:
+    #             tftdf_best_index = tf_idf_score_ls.index(max(tf_idf_score_ls))
+    #
+    #         fuzzy_best_content = context_ls[fuzzy_best_index][0].rstrip(self.punctuation_str)
+    #         tfidf_best_content = context_ls[tftdf_best_index][0].rstrip(self.punctuation_str)
+    #         if fuzzy_best_content == utterance or utterance in fuzzy_best_content:
+    #             best_index = fuzzy_best_index
+    #             return context_ls[best_index][1]
+    #
+    #         if tfidf_best_content == utterance or utterance in tfidf_best_content:
+    #             best_index = tftdf_best_index
+    #             return context_ls[best_index][1]
+    #
+    #         final_score_ls = [(fuzzy_ratio * self.fuzzy_weight + tf_tdf_score * self.tf_idf_weight) for fuzzy_ratio, tf_tdf_score in
+    #                           zip(fuzzy_ratio_ls, tf_idf_score_ls)]
+    #         # TODO: find a suitable weight
+    #         if max(final_score_ls) < 0.85 and file_name != "weibo" and file_name != "domains": # TODO: ugly code
+    #             answer = self.get_answer(utterance, "weibo")
+    #             return answer
+    #         else:
+    #             max_score = max(final_score_ls)
+    #             if final_score_ls.count(max_score) > 1:
+    #                 best_index = self.random_chose_index(final_score_ls, max_score)
+    #             else:
+    #                 best_index = final_score_ls.index(max_score)
+    #             return context_ls[best_index][1]
+    #     except Exception as e:
+    #         return "对不起亲，这个问题实在不晓得呀！"
+
     def get_answer(self, utterance, file_name=None):
-        try:
-            utterance = utterance.rstrip(self.punctuation_str)
-            if not file_name:
-                file_name = self.select_domain(utterance)
-
-            self.retrieval.read_indexes(file_name)
-            context_ls = self.retrieval.search_sentences(utterance)
-            if not context_ls and file_name != "domains":
-                return "对不起亲，没听懂你说啥，你再重新组织一下语言吧。"
-            if not context_ls and file_name == "domains":
-                answer = self.get_answer(utterance, "weibo")
-                return answer
-
-            if file_name == "domains":
-                fuzzy_ratio_ls = fuzzy_for_domains(utterance, context_ls)
-            else:
-                fuzzy_ratio_ls = fuzzy_matching(utterance, context_ls)
-
-            self.tf_idf.select_model(file_name)
-            self.tf_idf.predict_tfidf(utterance, context_ls)
-            tf_idf_score_ls = self.tf_idf.calculate_distances()
-
-            if fuzzy_ratio_ls.count(max(fuzzy_ratio_ls)) > 1:
-                fuzzy_best_index = self.random_chose_index(fuzzy_ratio_ls, max(fuzzy_ratio_ls))
-            else:
-                fuzzy_best_index = fuzzy_ratio_ls.index(max(fuzzy_ratio_ls))
-
-            if tf_idf_score_ls.count(max(tf_idf_score_ls)) > 1:
-                tftdf_best_index = self.random_chose_index(tf_idf_score_ls, max(tf_idf_score_ls))
-            else:
-                tftdf_best_index = tf_idf_score_ls.index(max(tf_idf_score_ls))
-
-            fuzzy_best_content = context_ls[fuzzy_best_index][0].rstrip(self.punctuation_str)
-            tfidf_best_content = context_ls[tftdf_best_index][0].rstrip(self.punctuation_str)
-            if fuzzy_best_content == utterance or utterance in fuzzy_best_content:
-                best_index = fuzzy_best_index
-                return context_ls[best_index][1]
-
-            if tfidf_best_content == utterance or utterance in tfidf_best_content:
-                best_index = tftdf_best_index
-                return context_ls[best_index][1]
-
-            final_score_ls = [(fuzzy_ratio * self.fuzzy_weight + tf_tdf_score * self.tf_idf_weight) for fuzzy_ratio, tf_tdf_score in
-                              zip(fuzzy_ratio_ls, tf_idf_score_ls)]
-            # TODO: find a suitable weight
-            if max(final_score_ls) < 0.85 and file_name != "weibo" and file_name != "domains": # TODO: ugly code
-                answer = self.get_answer(utterance, "weibo")
-                return answer
-            else:
-                max_score = max(final_score_ls)
-                if final_score_ls.count(max_score) > 1:
-                    best_index = self.random_chose_index(final_score_ls, max_score)
-                else:
-                    best_index = final_score_ls.index(max_score)
-                return context_ls[best_index][1]
-        except Exception as e:
-            return "对不起亲，这个问题实在不晓得呀！"
-
-    def get_answer2(self, utterance, file_name=None):
         try:
             utterance = utterance.rstrip(self.punctuation_str)
             file_name = self.get_utterance_type(utterance)
@@ -170,7 +170,7 @@ class Agent:
             return "", 0
 
     def test(self, utterance):
-        answer = self.get_answer2(utterance)
+        answer = self.get_answer(utterance)
         return answer
 
     def start(self):
@@ -178,11 +178,11 @@ class Agent:
             utterance = input(">>>")
             if utterance.strip() == "exit1":
                 break
-            answer = self.get_answer2(utterance)
+            answer = self.get_answer(utterance)
             print("<<<{}".format(answer))
 
     def api(self, utterance):
-        answer, score = self.get_answer2(utterance)
+        answer, score = self.get_answer(utterance)
         return [answer, score]
 
 

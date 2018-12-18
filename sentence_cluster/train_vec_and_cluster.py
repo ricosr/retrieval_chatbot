@@ -10,10 +10,12 @@ import gensim
 from sklearn.cluster import KMeans, MiniBatchKMeans
 from sklearn.externals import joblib
 
+
 def read_pickle_file(file_path):
     with open(file_path, "rb") as fp:
         data_lines = pickle.load(fp)
     return data_lines
+
 
 def cut_words_write(data_lines, cut_file_name):
     with open(cut_file_name, 'w', encoding='utf-8') as pfw:
@@ -23,12 +25,14 @@ def cut_words_write(data_lines, cut_file_name):
             seg_list = jieba.cut(line)
             pfw.write(' '.join(seg_list)+'\n')
 
+
 def train_vec_model(cut_file_name, vector_size, window, vec_file):
     sentences = gensim.models.doc2vec.TaggedLineDocument(cut_file_name)
     model = gensim.models.Doc2Vec(sentences, vector_size=vector_size, window=window)
     model.train(sentences, epochs=20, total_examples=model.corpus_count)
     model.save(vec_file)
     return model
+
 
 def train_cluster(data_lines, model, num_clusters, model_file):
     km = MiniBatchKMeans(n_clusters=num_clusters)
@@ -39,6 +43,7 @@ def train_cluster(data_lines, model, num_clusters, model_file):
     result = km.fit_predict(infered_vectors_list)
     joblib.dump(km, model_file)
     return result
+
 
 def write_doc_cluster(num_clusters, cluster_result, data_lines, out_put_dir):
     for i in range(num_clusters):

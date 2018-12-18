@@ -4,7 +4,6 @@ import pickle
 
 import jieba
 import gensim
-import numpy as np
 from sklearn.cluster import KMeans
 
 # get input file,text format
@@ -13,6 +12,7 @@ with open("../data/xiaohuangji.pkl", "rb") as fp:
 count = len(data_lines)
 print('源文件行数为：'+str(count))
 
+
 #read file and seperate words
 output = open('output.seq', 'w', encoding='utf-8')
 for each_ls in data_lines:
@@ -20,6 +20,7 @@ for each_ls in data_lines:
     line = line.strip('\n')
     seg_list = jieba.cut(line)
     output.write(' '.join(seg_list)+'\n')
+
 
 #训练并保存模型
 sentences = gensim.models.doc2vec.TaggedLineDocument('output.seq')

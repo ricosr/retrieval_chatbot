@@ -38,8 +38,6 @@ class TfIdf:
                 [self.parse_cn_to_en_format(each_context[0]) + self.parse_cn_to_en_format(each_context[1])]))
             self.vector_utterrance_ls.append(self.current_model.transform(
                 [self.parse_cn_to_en_format(utterances) + self.parse_cn_to_en_format(each_context[1])]))
-            # print([self.parse_cn_to_en_format(each_context[0]) + self.parse_cn_to_en_format(each_context[1])])
-            # print([self.parse_cn_to_en_format(utterances) + self.parse_cn_to_en_format(each_context[1])])
 
     def calculate_distances(self):
         result_ls = []
@@ -94,4 +92,3 @@ class TrainTfIdf:
             vectorizer = TfidfVectorizer()
             vectorizer.fit_transform(content_str_ls)
             joblib.dump(vectorizer, 'model/{}.pkl'.format(file_name))
-

@@ -21,15 +21,18 @@ def add_index(args):
     build_index.load_pickle(args.f)
     build_index.build_index()
 
+
 def add_domain_index(args):
     build_index = BuildIndex(config)
     build_index.load_pickle(args.f)
     build_index.build_domains_index()
 
+
 def train_tf_idf(args):
     tf_idf = TrainTfIdf(config)
     tf_idf.load_pickle(args.f)
     tf_idf.train()
+
 
 def yml_to_pickle(args):
     if not args.s:
@@ -48,6 +51,7 @@ def yml_to_pickle(args):
             os.mkdir(args.d[0])
         with open("{0}/{1}.pkl".format(args.d[0], data["categories"][0]), 'wb') as fpw:
             pickle.dump(data["conversations"], fpw)
+
 
 def conv_to_pickle(args):
     def write_pickle(args, file_name, key):
@@ -80,6 +84,7 @@ def conv_to_pickle(args):
         file_name = args.s.split('/')[-1].split('.')[0]
         write_pickle(args, file_name, True)
 
+
 def json_to_pickle(args):   # only be used in this special format corpus of this project
     json_file = args.s
     file_name = json_file.split('/')[-1].split('.')[0]
@@ -96,6 +101,7 @@ def json_to_pickle(args):   # only be used in this special format corpus of this
         os.mkdir(args.d[0])
     with open("{0}/{1}.pkl".format(args.d[0], file_name), 'wb') as fpw:
         pickle.dump(chat_ls, fpw)
+
 
 def count_none_frequency(file_name):   # just save none
     frequency_dict = {}
@@ -116,6 +122,7 @@ def count_none_frequency(file_name):   # just save none
                     frequency_dict[word] = freq
     with open("frequency_domain.py", "w", encoding="utf-8") as fwp:
         fwp.write("frequency_dict = {}".format(str(frequency_dict)))
+
 
 def combine_pickle(args):
     dir_path = args.p

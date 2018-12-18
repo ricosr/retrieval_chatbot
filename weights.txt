@@ -1,0 +1,81 @@
+fuzzy_weight=0.89, tf_idf_weight=0.11
+right times: 185, accuracy rate: 0.37
+fuzzy_weight=0.88, tf_idf_weight=0.12
+right times: 178, accuracy rate: 0.356
+fuzzy_weight=0.87, tf_idf_weight=0.13
+right times: 179, accuracy rate: 0.358
+fuzzy_weight=0.86, tf_idf_weight=0.14
+right times: 180, accuracy rate: 0.36
+fuzzy_weight=0.85, tf_idf_weight=0.15000000000000002
+right times: 180, accuracy rate: 0.36
+fuzzy_weight=0.84, tf_idf_weight=0.16000000000000003
+right times: 180, accuracy rate: 0.36
+fuzzy_weight=0.83, tf_idf_weight=0.17000000000000004
+right times: 180, accuracy rate: 0.36
+fuzzy_weight=0.82, tf_idf_weight=0.18000000000000005
+right times: 178, accuracy rate: 0.356
+fuzzy_weight=0.8099999999999999, tf_idf_weight=0.19000000000000006
+right times: 185, accuracy rate: 0.37
+fuzzy_weight=0.7999999999999999, tf_idf_weight=0.20000000000000007
+right times: 179, accuracy rate: 0.358
+fuzzy_weight=0.7899999999999999, tf_idf_weight=0.21000000000000008
+right times: 181, accuracy rate: 0.362
+fuzzy_weight=0.7799999999999999, tf_idf_weight=0.22000000000000008
+right times: 174, accuracy rate: 0.348
+fuzzy_weight=0.7699999999999999, tf_idf_weight=0.2300000000000001
+right times: 178, accuracy rate: 0.356
+fuzzy_weight=0.7599999999999999, tf_idf_weight=0.2400000000000001
+right times: 183, accuracy rate: 0.366
+fuzzy_weight=0.7499999999999999, tf_idf_weight=0.2500000000000001
+right times: 176, accuracy rate: 0.352
+fuzzy_weight=0.7399999999999999, tf_idf_weight=0.2600000000000001
+right times: 180, accuracy rate: 0.36
+fuzzy_weight=0.7299999999999999, tf_idf_weight=0.27000000000000013
+right times: 177, accuracy rate: 0.354
+fuzzy_weight=0.7199999999999999, tf_idf_weight=0.28000000000000014
+right times: 175, accuracy rate: 0.35
+fuzzy_weight=0.7099999999999999, tf_idf_weight=0.29000000000000015
+right times: 184, accuracy rate: 0.368
+fuzzy_weight=0.6999999999999998, tf_idf_weight=0.30000000000000016
+right times: 176, accuracy rate: 0.352
+fuzzy_weight=0.6899999999999998, tf_idf_weight=0.31000000000000016
+right times: 183, accuracy rate: 0.366
+fuzzy_weight=0.6799999999999998, tf_idf_weight=0.3200000000000002
+right times: 180, accuracy rate: 0.36
+fuzzy_weight=0.6699999999999998, tf_idf_weight=0.3300000000000002
+right times: 177, accuracy rate: 0.354
+fuzzy_weight=0.6599999999999998, tf_idf_weight=0.3400000000000002
+right times: 179, accuracy rate: 0.358
+fuzzy_weight=0.6499999999999998, tf_idf_weight=0.3500000000000002
+right times: 180, accuracy rate: 0.36
+fuzzy_weight=0.6399999999999998, tf_idf_weight=0.3600000000000002
+right times: 176, accuracy rate: 0.352
+fuzzy_weight=0.6299999999999998, tf_idf_weight=0.3700000000000002
+right times: 178, accuracy rate: 0.356
+fuzzy_weight=0.6199999999999998, tf_idf_weight=0.3800000000000002
+right times: 180, accuracy rate: 0.36
+fuzzy_weight=0.6099999999999998, tf_idf_weight=0.39000000000000024
+right times: 178, accuracy rate: 0.356
+fuzzy_weight=0.5999999999999998, tf_idf_weight=0.40000000000000024
+right times: 181, accuracy rate: 0.362
+fuzzy_weight=0.5899999999999997, tf_idf_weight=0.41000000000000025
+right times: 179, accuracy rate: 0.358
+fuzzy_weight=0.5799999999999997, tf_idf_weight=0.42000000000000026
+right times: 177, accuracy rate: 0.354
+fuzzy_weight=0.57, tf_idf_weight=0.43
+right times: 181, accuracy rate: 0.362
+fuzzy_weight=0.5599999999999999, tf_idf_weight=0.44
+right times: 182, accuracy rate: 0.364
+fuzzy_weight=0.5499999999999999, tf_idf_weight=0.45
+right times: 180, accuracy rate: 0.36
+fuzzy_weight=0.5399999999999999, tf_idf_weight=0.46
+right times: 183, accuracy rate: 0.366
+fuzzy_weight=0.5299999999999999, tf_idf_weight=0.47000000000000003
+right times: 177, accuracy rate: 0.354
+fuzzy_weight=0.5199999999999999, tf_idf_weight=0.48000000000000004
+right times: 183, accuracy rate: 0.366
+fuzzy_weight=0.5099999999999999, tf_idf_weight=0.49000000000000005
+right times: 180, accuracy rate: 0.36
+fuzzy_weight=0.4999999999999999, tf_idf_weight=0.5
+right times: 181, accuracy rate: 0.362
+fuzzy_weight=0.4899999999999999, tf_idf_weight=0.51
