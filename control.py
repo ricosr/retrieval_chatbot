@@ -3,6 +3,7 @@
 # Copyright (c) by 2018 Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 from random import choice
+import pickle
 
 import jieba
 from gensim.models.doc2vec import Doc2Vec, LabeledSentence
@@ -20,6 +21,7 @@ NUM_OF_IR = 2
 class Agent:
     def __init__(self):
         self.config = config
+        self.stop_words = ''
         self.punctuation_str = ''.join(self.config.punctuation_ls)
         self.frequency_domain_dict = frequency_domain.frequency_dict
         self.cluster_md = self.config.cluster_model
@@ -35,6 +37,7 @@ class Agent:
         # TODO: wait for models
         self.cluster_model = joblib.load(self.cluster_md)
         self.vec_model = Doc2Vec.load(self.vec_md)
+        self.load_stop_words(self.config)
         jieba.initialize()
 
     def select_domain(self, utterance):
@@ -60,6 +63,10 @@ class Agent:
             if score_ls[i] == max_score:
                 max_score_indexes.append(i)
         return choice(max_score_indexes)
+
+    def load_stop_words(self, config):
+        with open(config.stop_words, 'rb') as fpr:
+            self.stop_words = pickle.load(fpr)
 
     # def get_answer_domain(self, utterance, file_name=None):
     #     try:
@@ -125,7 +132,7 @@ class Agent:
             file_name = self.get_utterance_type(utterance)
 
             self.retrieval.read_indexes(file_name)
-            context_ls = self.retrieval.search_sentences(utterance)
+            context_ls = self.retrieval.search_sentences(utterance, self.stop_words)
             if not context_ls:
                 return "", 0
 
@@ -147,11 +154,11 @@ class Agent:
 
             fuzzy_best_content = context_ls[fuzzy_best_index][0].rstrip(self.punctuation_str)
             tfidf_best_content = context_ls[tftdf_best_index][0].rstrip(self.punctuation_str)
-            if fuzzy_best_content == utterance or utterance in fuzzy_best_content:
+            if fuzzy_best_content == utterance or utterance.strip(''.join(config.special_modal_words)) in fuzzy_best_content:
                 best_index = fuzzy_best_index
                 return context_ls[best_index][1], max(fuzzy_ratio_ls)
 
-            if tfidf_best_content == utterance or utterance in tfidf_best_content:
+            if tfidf_best_content == utterance or utterance.strip(''.join(config.special_modal_words)) in tfidf_best_content:
                 best_index = tftdf_best_index
                 return context_ls[best_index][1], max(tf_idf_score_ls)
 

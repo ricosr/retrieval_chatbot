@@ -135,13 +135,22 @@ def combine_pickle(args):
         pickle.dump(final_ls, fpw)
 
 
+def create_stop_words_ls():
+    with open("stopwords/baidu.txt", 'r', encoding='utf-8') as fpb:
+        baidu_stop = fpb.readlines()
 
+    with open("stopwords/HIT.txt", 'r', encoding='utf-8') as fpH:
+        HIT_stop = fpH.readlines()
 
+    with open("stopwords/SCU.txt", 'r', encoding='utf-8') as fpS:
+        SCU_stop = fpS.readlines()
 
+    with open("stopwords/ZH.txt", 'r', encoding='utf-8')as fpZ:
+        ZH_stop = fpZ.readlines()
 
+    all_stop = baidu_stop + HIT_stop + SCU_stop + ZH_stop
+    new_stop = map(lambda a: a.strip(), all_stop)
+    with open("stopwords/all_stop.pkl", 'wb') as fpw:
+        pickle.dump(list(set(new_stop)), fpw)
 
-
-
-
-
-
+# create_stop_words_ls()

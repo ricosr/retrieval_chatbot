@@ -36,13 +36,22 @@ class Retrieval:
         except Exception as e:
             pass
 
-    def remove_high_freq_words(self, words_ls, origin_ls):
-        if words_ls:
-            tmp_ls = copy.deepcopy(origin_ls)
+    def remove_stop_words(self, stop_words_ls, origin_ls):
+        if len(origin_ls) > 7:   # TODO: test 6
+            # tmp_ls = copy.deepcopy(origin_ls)
             for i in range(len(origin_ls)):
-                if origin_ls[i] in words_ls:
-                    tmp_ls.pop(i)
-            return tmp_ls
+                if origin_ls[i] in stop_words_ls:
+                    print(origin_ls[i])
+                    origin_ls[i] = 0
+                    # tmp_ls.pop(i)
+            while True:
+                if 0 in origin_ls:
+                    origin_ls.remove(0)
+                else:
+                    break
+            return origin_ls
+        if origin_ls[-1] in self.config.special_modal_words:
+            origin_ls.pop(-1)
         return origin_ls
 
     def cut_by_punctuation(self, sentence):
@@ -63,51 +72,63 @@ class Retrieval:
 
     def filter_results_by_seg(self, result_utter, utter_seg):
         count = 0
-        if len(utter_seg) > 10:
-            for each_seg in utter_seg:
-                if len(each_seg) == 1:
-                    continue
-                if each_seg in result_utter:
-                    count += 1
-            if count < 3:
-                return False, count
+        for each_seg in utter_seg:
+            if len(each_seg) == 1:
+                continue
+            if each_seg in result_utter:
+                count += 1
+        if count < 3:
+            return False, count
         return True, count
 
-    def search_sentences(self, utterance):
+    def search_sentences(self, utterance, stop_words):
         utterance_ls = self.cut_by_punctuation(utterance)
         result_ls = []
+        cache_resutl_ls = []
         seg_list = []
-        new_seg_ls = []
         for each_part in utterance_ls:
             tmp_words_ls = [each_word for each_word in jieba.cut(each_part, cut_all=False)]
-            seg_list.append(self.remove_high_freq_words(self.config.remove_words, tmp_words_ls))
-        segments = list(reduce((lambda ls1, ls2: ls1+ls2), seg_list))
-        print("segments:{}".format(segments))
-        if len(seg_list) == 1 and len(seg_list[0]) < 5:
-            for each_seg_ls in seg_list:
-                self.tmp_seg_ls = []
-                self.create_query_segments(each_seg_ls)
-                new_seg_ls.append(self.tmp_seg_ls)
-        else:
-            for each_seg_ls in seg_list:
-                self.tmp_seg_ls = []
-                self.create_query_segments(each_seg_ls)
-                if len(self.tmp_seg_ls) > 1:
-                    list(map(self.tmp_seg_ls.remove, each_seg_ls))
-                if len(self.tmp_seg_ls) > 2:
-                    self.tmp_seg_ls.remove(sorted(self.tmp_seg_ls, key=lambda k: len(k), reverse=True)[0])
-                new_seg_ls.append(self.tmp_seg_ls)
-        # segments = list(reduce((lambda ls1, ls2: ls1+ls2), new_seg_ls))
-        # print("segments:{}".format(segments))
-        for each_new_seg in new_seg_ls:
-            with self.current_index.searcher() as searcher:
-                for each_seg in each_new_seg:
-                    query = QueryParser("content", self.current_index.schema).parse(each_seg)
-                    results = searcher.search(query, limit=self.num_ir)
-                    for hit in results:
-                        filter_key, count = self.filter_results_by_seg(hit["content"]+hit["title"], segments)
-                        if filter_key is True:
-                            result_ls.append([hit["content"], hit["title"]])
+            print("tmp_words_ls: {}".format(tmp_words_ls))
+            # seg_list.append(self.remove_stop_words(stop_words, tmp_words_ls))
+            seg_list.extend(tmp_words_ls)
+        # segments = list(reduce((lambda ls1, ls2: ls1+ls2), seg_list))
+        print("seg_list1:{}".format(seg_list))
+        new_seg_list = self.remove_stop_words(stop_words, seg_list)
+        print("new_seg_list:{}".format(new_seg_list))
+        # if len(seg_list) == 1 and len(seg_list[0]) < 5:
+        #     for each_seg_ls in seg_list:
+        #         self.tmp_seg_ls = []
+        #         self.create_query_segments(each_seg_ls)
+        #         new_seg_ls.append(self.tmp_seg_ls)
+        # else:
+        #     for each_seg_ls in seg_list:
+        #         self.tmp_seg_ls = []
+        #         self.create_query_segments(each_seg_ls)
+        #         # if len(self.tmp_seg_ls) > 1:
+        #         #     list(map(self.tmp_seg_ls.remove, each_seg_ls))
+        #         # if len(self.tmp_seg_ls) > 2:
+        #         #     self.tmp_seg_ls.remove(sorted(self.tmp_seg_ls, key=lambda k: len(k), reverse=True)[0])
+        #         new_seg_ls.append(self.tmp_seg_ls)
+        # for each_seg_ls in new_seg_list:
+        #     self.tmp_seg_ls = []
+        #     self.create_query_segments(each_seg_ls)
+        #     new_seg_ls.append(self.tmp_seg_ls)
+        self.tmp_seg_ls = []
+        self.create_query_segments(new_seg_list)
+        new_seg_ls = self.tmp_seg_ls
+        print("new_seg_ls: {}".format(new_seg_ls))
+        with self.current_index.searcher() as searcher:
+            for each_seg in new_seg_ls:
+                query = QueryParser("content", self.current_index.schema).parse(each_seg)
+                results = searcher.search(query, limit=self.num_ir)
+                for hit in results:
+                    cache_resutl_ls.append([hit["content"], hit["title"]])
+                    # filter_key = True
+                    filter_key, count = self.filter_results_by_seg(hit["content"]+hit["title"], seg_list)
+                    if filter_key is True:
+                        result_ls.append([hit["content"], hit["title"]])
+        if not result_ls:
+            result_ls = cache_resutl_ls
         tmp_result_ls = [(each_content[0], each_content[1]) for each_content in result_ls]
         print("result ls:{}".format(set(tmp_result_ls)))
         return list(set(tmp_result_ls))  # TODO: need to improve

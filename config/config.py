@@ -59,5 +59,9 @@ punctuation_ls = ['`', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_
                   '！', '·', '￥', '……', '（', '）', '——', '【', '】', '、', '：', '；', '’', '‘', '“',
                   '”', '《', '，', '。', '》', '？']
 
+stop_words = "stopwords/all_stop.pkl"
+
+special_modal_words = ['啊', '呢', '了', '吧', '吗', '呀', '噻', '哈', '呦']
+
 remove_words = []
 # TODO: add function to create config file
