@@ -106,7 +106,6 @@ class Agent:
     #
     #         final_score_ls = [(fuzzy_ratio * self.fuzzy_weight + tf_tdf_score * self.tf_idf_weight) for fuzzy_ratio, tf_tdf_score in
     #                           zip(fuzzy_ratio_ls, tf_idf_score_ls)]
-    #         # TODO: find a suitable weight
     #         if max(final_score_ls) < 0.85 and file_name != "weibo" and file_name != "domains": # TODO: ugly code
     #             answer = self.get_answer(utterance, "weibo")
     #             return answer
@@ -165,6 +164,7 @@ class Agent:
                 best_index = self.random_chose_index(final_score_ls, max_score)
             else:
                 best_index = final_score_ls.index(max_score)
+            print("final result:{}".format(context_ls[best_index]))
             return context_ls[best_index][1], max_score
         except Exception as e:
             return "", 0
@@ -186,6 +186,6 @@ class Agent:
         return [answer, score]
 
 
-# if __name__ == '__main__':
-#     agent = Agent()
-#     agent.start()
+if __name__ == '__main__':
+    agent = Agent()
+    agent.start()
