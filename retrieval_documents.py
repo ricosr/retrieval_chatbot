@@ -12,6 +12,7 @@ from whoosh.qparser import QueryParser
 from whoosh.index import create_in, open_dir
 from jieba.analyse.analyzer import ChineseAnalyzer
 import jieba
+import jieba.posseg as pseg
 
 
 class Retrieval:
@@ -36,23 +37,32 @@ class Retrieval:
         except Exception as e:
             pass
 
-    def remove_stop_words(self, stop_words_ls, origin_ls):
-        if len(origin_ls) > 7:   # TODO: test 6
+    def cut_words(self, sentence):
+        words_result = []
+        words = pseg.cut(sentence)
+        for (word, flag) in words:
+            if flag == 't' or flag == 'b' or flag == 'ul':
+                continue
+            else:
+                words_result.append(word)
+        return words_result
+
+    def remove_stop_words(self, stop_words_ls, cut_words_ls):
+        if len(cut_words_ls) > 6:
             # tmp_ls = copy.deepcopy(origin_ls)
-            for i in range(len(origin_ls)):
-                if origin_ls[i] in stop_words_ls:
-                    print(origin_ls[i])
-                    origin_ls[i] = 0
+            for i in range(len(cut_words_ls)):
+                if cut_words_ls[i] in stop_words_ls:
+                    cut_words_ls[i] = 0
                     # tmp_ls.pop(i)
             while True:
-                if 0 in origin_ls:
-                    origin_ls.remove(0)
+                if 0 in cut_words_ls:
+                    cut_words_ls.remove(0)
                 else:
                     break
-            return origin_ls
-        if origin_ls[-1] in self.config.special_modal_words:
-            origin_ls.pop(-1)
-        return origin_ls
+            return cut_words_ls
+        if cut_words_ls[-1] in self.config.special_modal_words:
+            cut_words_ls.pop(-1)
+        return cut_words_ls
 
     def cut_by_punctuation(self, sentence):
         sentence_ls = list(sentence)
@@ -77,9 +87,27 @@ class Retrieval:
                 continue
             if each_seg in result_utter:
                 count += 1
-        if count < 3:
+        if count < 2:
             return False, count
         return True, count
+
+    def find_max_min_length(self, words_ls):
+        max_length = 0
+        max_count = 0
+        min_length = 100
+        min_count = 0
+        for each_word in words_ls:
+            if len(each_word) == max_length:
+                max_count += 1
+            if len(each_word) == min_length:
+                min_count += 1
+            if len(each_word) > max_length:
+                max_length = len(each_word)
+                max_count = 1
+            if len(each_word) < min_length:
+                min_length = len(each_word)
+                min_count = 1
+        return (max_length, max_count), (min_length, min_count)
 
     def search_sentences(self, utterance, stop_words):
         utterance_ls = self.cut_by_punctuation(utterance)
@@ -87,7 +115,7 @@ class Retrieval:
         cache_resutl_ls = []
         seg_list = []
         for each_part in utterance_ls:
-            tmp_words_ls = [each_word for each_word in jieba.cut(each_part, cut_all=False)]
+            tmp_words_ls = self.cut_words(each_part)
             print("tmp_words_ls: {}".format(tmp_words_ls))
             # seg_list.append(self.remove_stop_words(stop_words, tmp_words_ls))
             seg_list.extend(tmp_words_ls)
@@ -115,6 +143,7 @@ class Retrieval:
         #     new_seg_ls.append(self.tmp_seg_ls)
         self.tmp_seg_ls = []
         self.create_query_segments(new_seg_list)
+        # utter_seg = sorted(new_seg_list, key=lambda k: len(k), reverse=True)
         new_seg_ls = self.tmp_seg_ls
         print("new_seg_ls: {}".format(new_seg_ls))
         with self.current_index.searcher() as searcher:
@@ -124,14 +153,15 @@ class Retrieval:
                 for hit in results:
                     cache_resutl_ls.append([hit["content"], hit["title"]])
                     # filter_key = True
-                    filter_key, count = self.filter_results_by_seg(hit["content"]+hit["title"], seg_list)
+                    filter_key, count = self.filter_results_by_seg(hit["content"]+hit["title"], set(new_seg_list))
                     if filter_key is True:
                         result_ls.append([hit["content"], hit["title"]])
         if not result_ls:
+            print("no result....")
             result_ls = cache_resutl_ls
         tmp_result_ls = [(each_content[0], each_content[1]) for each_content in result_ls]
         print("result ls:{}".format(set(tmp_result_ls)))
-        return list(set(tmp_result_ls))  # TODO: need to improve
+        return list(set(tmp_result_ls))
 
 
 class BuildIndex:

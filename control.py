@@ -126,6 +126,13 @@ class Agent:
     #     except Exception as e:
     #         return "对不起亲，这个问题实在不晓得呀！"
 
+    def remove_special_words(self, stop_words_ls, input_sentence):
+        sentence = input_sentence
+        for special_word in self.config.special_modal_words:
+            if special_word in sentence:
+                sentence = sentence.replace(special_word, '')
+        return sentence
+
     def get_answer(self, utterance, file_name=None):
         try:
             utterance = utterance.rstrip(self.punctuation_str)
@@ -135,11 +142,20 @@ class Agent:
             context_ls = self.retrieval.search_sentences(utterance, self.stop_words)
             if not context_ls:
                 return "", 0
-
-            fuzzy_ratio_ls = fuzzy_matching(utterance, context_ls)
+            utterance = self.remove_special_words(self.stop_words, utterance)
+            new_context_ls = []
+            for each_context in context_ls:
+                ques = self.remove_special_words(self.stop_words, each_context[0])
+                ans = self.remove_special_words(self.stop_words, each_context[1])
+                if not ques or not ans:
+                    new_context_ls.append((0, 0))
+                    continue
+                new_context_ls.append((ques, ans))
+            print("control!!!!!!!!!!!!!!!!!: {},{}".format(utterance, new_context_ls))
+            fuzzy_ratio_ls = fuzzy_matching(utterance, new_context_ls)
 
             self.tf_idf.select_model(file_name)
-            self.tf_idf.predict_tfidf(utterance, context_ls)
+            self.tf_idf.predict_tfidf(utterance, new_context_ls)
             tf_idf_score_ls = self.tf_idf.calculate_distances()
 
             if fuzzy_ratio_ls.count(max(fuzzy_ratio_ls)) > 1:

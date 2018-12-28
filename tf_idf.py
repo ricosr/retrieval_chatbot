@@ -34,6 +34,8 @@ class TfIdf:
 
     def predict_tfidf(self, utterances, context_ls):
         for each_context in context_ls:
+            if each_context == (0, 0):
+                continue
             self.vector_context_ls.append(self.current_model.transform(
                 [self.parse_cn_to_en_format(each_context[0]) + self.parse_cn_to_en_format(each_context[1])]))
             self.vector_utterrance_ls.append(self.current_model.transform(

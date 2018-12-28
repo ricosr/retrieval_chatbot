@@ -16,6 +16,8 @@ def normalization(ratio_ls):
 def fuzzy_matching(utterance, context_ls):
     ratio_ls = []
     for i in range(len(context_ls)):
+        if context_ls[i] == (0, 0):
+            continue
         ratio_sum = 0
         ratio_sum += fuzz.ratio(utterance+','+context_ls[i][1], context_ls[i][0]+','+context_ls[i][1])
         ratio_sum += fuzz.partial_ratio(utterance+','+context_ls[i][1], context_ls[i][0]+','+context_ls[i][1])
