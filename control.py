@@ -206,9 +206,9 @@ class Agent:
 
     def api(self, utterance):
         answer, score = self.get_answer(utterance)
-        return [answer, score]
+        return answer + '---' + str(score)
 
 
-if __name__ == '__main__':
-    agent = Agent()
-    agent.start()
+# if __name__ == '__main__':
+#     agent = Agent()
+#     agent.start()
