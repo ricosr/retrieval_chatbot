@@ -116,13 +116,13 @@ class Retrieval:
         seg_list = []
         for each_part in utterance_ls:
             tmp_words_ls = self.cut_words(each_part)
-            print("tmp_words_ls: {}".format(tmp_words_ls))
+            # # print("tmp_words_ls: {}".format(tmp_words_ls))
             # seg_list.append(self.remove_stop_words(stop_words, tmp_words_ls))
             seg_list.extend(tmp_words_ls)
         # segments = list(reduce((lambda ls1, ls2: ls1+ls2), seg_list))
-        print("seg_list1:{}".format(seg_list))
+        # print("seg_list1:{}".format(seg_list))
         new_seg_list = self.remove_stop_words(stop_words, seg_list)
-        print("new_seg_list:{}".format(new_seg_list))
+        # print("new_seg_list:{}".format(new_seg_list))
         # if len(seg_list) == 1 and len(seg_list[0]) < 5:
         #     for each_seg_ls in seg_list:
         #         self.tmp_seg_ls = []
@@ -145,7 +145,7 @@ class Retrieval:
         self.create_query_segments(new_seg_list)
         # utter_seg = sorted(new_seg_list, key=lambda k: len(k), reverse=True)
         new_seg_ls = self.tmp_seg_ls
-        print("new_seg_ls: {}".format(new_seg_ls))
+        # print("new_seg_ls: {}".format(new_seg_ls))
         with self.current_index.searcher() as searcher:
             for each_seg in new_seg_ls:
                 query = QueryParser("content", self.current_index.schema).parse(each_seg)
@@ -157,10 +157,10 @@ class Retrieval:
                     if filter_key is True:
                         result_ls.append([hit["content"], hit["title"]])
         if not result_ls:
-            print("no result....")
+            # print("no result....")
             result_ls = cache_resutl_ls
         tmp_result_ls = [(each_content[0], each_content[1]) for each_content in result_ls]
-        print("result ls:{}".format(set(tmp_result_ls)))
+        # print("result ls:{}".format(set(tmp_result_ls)))
         return list(set(tmp_result_ls))
 
 
