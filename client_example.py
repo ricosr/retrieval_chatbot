@@ -20,7 +20,9 @@ class Client:
         gevent.joinall([client2])
 
     def get(self):
-        return self.response
+        replyTxt = self.response.split("---")[0]
+        score = float(self.response.split("---")[1])
+        return replyTxt, score
 
 if __name__ == '__main__':
     utterance = '我昨天去了周杰伦的演唱会，太精彩了，我超级喜欢周杰伦！'

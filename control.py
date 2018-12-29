@@ -151,7 +151,8 @@ class Agent:
                     new_context_ls.append((0, 0))
                     continue
                 new_context_ls.append((ques, ans))
-            # print("control!!!!!!!!!!!!!!!!!: {},{}".format(utterance, new_context_ls))
+            print("control!!!!!!!!!!!!!!!!!: {},{}".format(utterance, new_context_ls))
+            print(len(new_context_ls))
             fuzzy_ratio_ls = fuzzy_matching(utterance, new_context_ls)
 
             self.tf_idf.select_model(file_name)
@@ -186,8 +187,8 @@ class Agent:
                 best_index = self.random_chose_index(final_score_ls, max_score)
             else:
                 best_index = final_score_ls.index(max_score)
-            # print("final result:{}".format(context_ls[best_index]))
-            return context_ls[best_index][1], max_score
+            print("final result:{}".format(context_ls[best_index]))
+            return context_ls[best_index][1], max_score[0][0]
         except Exception as e:
             return "", 0
 
@@ -201,17 +202,18 @@ class Agent:
             if utterance.strip() == "exit1":
                 break
             answer, score = self.get_answer(utterance)
-            print("<<<{}:{}".format(answer, list(score)[0][0]))
+            print("<<<{}:{}".format(answer, score))
 
     def api(self, utterance):
         answer, score = self.get_answer(utterance)
-        return [answer, list(score)[0][0]]
+        return [answer, score]
 
     def socket_get(self, utterance):
         answer, score = self.get_answer(utterance)
-        return answer + '---' + str(list(score)[0][0])
+        # print(answer + '---' + str(score[0][0]))
+        return answer + '---' + str(score)
 
-
+#
 # if __name__ == '__main__':
 #     agent = Agent()
 #     agent.start()
