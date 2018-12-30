@@ -6,3 +6,4 @@ scikit-learn
 python-Levenshtein
 nltk
 gensim
+numpy

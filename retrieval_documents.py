@@ -16,7 +16,7 @@ import jieba.posseg as pseg
 
 
 class Retrieval:
-    def __init__(self, num_ir=10, config=None):
+    def __init__(self, num_ir, config=None):
         self.num_ir = num_ir
         self.config = config
         self.current_index = None
@@ -145,25 +145,37 @@ class Retrieval:
         self.create_query_segments(new_seg_list)
         # utter_seg = sorted(new_seg_list, key=lambda k: len(k), reverse=True)
         print(stop_key)
-        if not stop_key:
+        if not stop_key and len(self.tmp_seg_ls) > 1:
             list(map(self.tmp_seg_ls.remove, new_seg_list))
         new_seg_ls = self.tmp_seg_ls
         print("new_seg_ls: {}".format(new_seg_ls))
+        utter_seg = sorted(new_seg_ls, key=lambda k: len(k), reverse=True)
+        search_length = len(utter_seg)
+        print("utter_seg:{}".format(utter_seg))
         with self.current_index.searcher() as searcher:
-            for each_seg in new_seg_ls:
+            # result_count = 0
+            for each_seg in utter_seg:
                 query = QueryParser("content", self.current_index.schema).parse(each_seg)
                 results = searcher.search(query, limit=self.num_ir)
+                # print("result length:{}".format(len(results)))
+                # result_count += len(results)
+                filter_key = False
                 for hit in results:
                     cache_resutl_ls.append([hit["content"], hit["title"]])
                     # filter_key = True
                     filter_key, count = self.filter_results_by_seg(hit["content"]+hit["title"], set(new_seg_list))
                     if filter_key is True:
                         result_ls.append([hit["content"], hit["title"]])
+                # if not stop_key:
+                if len(cache_resutl_ls) >= search_length*self.num_ir/2:
+                    print("result_count:{}".format(len(cache_resutl_ls)))
+                    break
+
         if not result_ls:
             print("no result....")
             result_ls = cache_resutl_ls
         tmp_result_ls = [(each_content[0], each_content[1]) for each_content in result_ls]
-        # print("result ls:{}".format(set(tmp_result_ls)))
+        print("result ls:{}".format(set(tmp_result_ls)))
         return list(set(tmp_result_ls))
 
 

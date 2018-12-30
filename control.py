@@ -8,6 +8,7 @@ import pickle
 import jieba
 from gensim.models.doc2vec import Doc2Vec, LabeledSentence
 from sklearn.externals import joblib
+import numpy as np
 
 from retrieval_documents import Retrieval
 from fuzzy_match import fuzzy_matching, fuzzy_for_domains
@@ -16,7 +17,7 @@ from config import config, frequency_domain
 
 # TODO: distribute message by threading or tornado or Gevent(no Windows)
 
-NUM_OF_IR = 2
+NUM_OF_IR = 11
 
 class Agent:
     def __init__(self):
@@ -188,7 +189,11 @@ class Agent:
             else:
                 best_index = final_score_ls.index(max_score)
             print("final result:{}".format(context_ls[best_index]))
-            return context_ls[best_index][1], max_score[0][0]
+            print(type(max_score))
+            if type(max_score) is np.ndarray:
+                return context_ls[best_index][1], max_score[0][0]
+            else:
+                return context_ls[best_index][1], max_score
         except Exception as e:
             return "", 0
 
@@ -213,7 +218,7 @@ class Agent:
         # print(answer + '---' + str(score[0][0]))
         return answer + '---' + str(score)
 
-#
-# if __name__ == '__main__':
-#     agent = Agent()
-#     agent.start()
+
+if __name__ == '__main__':
+    agent = Agent()
+    agent.start()
