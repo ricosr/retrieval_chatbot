@@ -17,7 +17,7 @@ from config import config, frequency_domain
 
 # TODO: distribute message by threading or tornado or Gevent(no Windows)
 
-NUM_OF_IR = 2
+NUM_OF_IR = 20
 
 class Agent:
     def __init__(self):

@@ -11,6 +11,7 @@ from whoosh.fields import *
 from whoosh.qparser import QueryParser
 from whoosh.index import create_in, open_dir
 from jieba.analyse.analyzer import ChineseAnalyzer
+from whoosh import scoring
 import jieba
 import jieba.posseg as pseg
 
@@ -48,21 +49,19 @@ class Retrieval:
         return words_result
 
     def remove_stop_words(self, stop_words_ls, cut_words_ls):
-        if len(cut_words_ls) > 6:
-            # tmp_ls = copy.deepcopy(origin_ls)
-            for i in range(len(cut_words_ls)):
-                if cut_words_ls[i] in stop_words_ls:
-                    cut_words_ls[i] = 0
-                    # tmp_ls.pop(i)
-            while True:
-                if 0 in cut_words_ls:
-                    cut_words_ls.remove(0)
-                else:
-                    break
-            return cut_words_ls, True
-        if cut_words_ls[-1] in self.config.special_modal_words:
-            cut_words_ls.pop(-1)
-        return cut_words_ls, False
+        stop_type = True
+        if len(cut_words_ls) <= 6:
+            stop_words_ls = self.config.special_modal_words
+            stop_type = False
+        for i in range(len(cut_words_ls)):
+            if cut_words_ls[i] in stop_words_ls:
+                cut_words_ls[i] = 0
+        while True:
+            if 0 in cut_words_ls:
+                cut_words_ls.remove(0)
+            else:
+                break
+        return cut_words_ls, stop_type
 
     def cut_by_punctuation(self, sentence):
         sentence_ls = list(sentence)
@@ -145,9 +144,13 @@ class Retrieval:
         self.create_query_segments(new_seg_list)
         # utter_seg = sorted(new_seg_list, key=lambda k: len(k), reverse=True)
         print(stop_key)
+        new_seg_ls = copy.copy(self.tmp_seg_ls)
         if not stop_key and len(self.tmp_seg_ls) > 1:
             list(map(self.tmp_seg_ls.remove, new_seg_list))
-        new_seg_ls = self.tmp_seg_ls
+        print(self.tmp_seg_ls)
+        if len(self.tmp_seg_ls) > 1:
+            print("remove")
+            sz = self.tmp_seg_ls
         print("new_seg_ls: {}".format(new_seg_ls))
         utter_seg = sorted(new_seg_ls, key=lambda k: len(k), reverse=True)
         search_length = len(utter_seg)
@@ -157,7 +160,9 @@ class Retrieval:
             for each_seg in utter_seg:
                 query = QueryParser("content", self.current_index.schema).parse(each_seg)
                 results = searcher.search(query, limit=self.num_ir)
-                # print("result length:{}".format(len(results)))
+                print("result hit:{}".format(results))
+                print("result length:{}".format(len(results)))
+                print("results: {}".format(list(results)))
                 # result_count += len(results)
                 filter_key = False
                 for hit in results:
@@ -167,7 +172,7 @@ class Retrieval:
                     if filter_key is True:
                         result_ls.append([hit["content"], hit["title"]])
                 # if not stop_key:
-                if len(cache_resutl_ls) >= search_length*self.num_ir/2:
+                if search_length > 3 and len(cache_resutl_ls) >= search_length*self.num_ir/2:
                     print("result_count:{}".format(len(cache_resutl_ls)))
                     break
 
