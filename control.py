@@ -4,6 +4,8 @@
 
 from random import choice
 import pickle
+import threading
+import time
 
 import jieba
 from gensim.models.doc2vec import Doc2Vec, LabeledSentence
@@ -11,7 +13,7 @@ from sklearn.externals import joblib
 import numpy as np
 
 from retrieval_documents import Retrieval
-from fuzzy_match import fuzzy_matching, fuzzy_for_domains
+from fuzzy_match import fuzzy_matching
 from tf_idf import TfIdf
 from config import config, frequency_domain
 
@@ -20,6 +22,8 @@ NUM_OF_IR = 20
 
 
 class Agent:
+    good_qualified_corpus = set()
+
     def __init__(self):
         self.config = config
         self.stop_words = ''
@@ -30,7 +34,8 @@ class Agent:
         self.init_all_states()
         self.fuzzy_weight = 0.15
         self.tf_idf_weight = 0.85
-        # self.record_chat_ls = [] # TODO
+        self.good_corpus_threshold = 1000
+        self.good_corpus_score = 0.99
 
     def init_all_states(self):
         self.retrieval = Retrieval(num_ir=NUM_OF_IR, config=self.config)
@@ -41,14 +46,26 @@ class Agent:
         jieba.initialize()
 
     def get_utterance_type(self, utterance):
-        # TODO: wait for models
         tmp_vector = self.vec_model.infer_vector(utterance)
         label = self.cluster_model.predict(tmp_vector.reshape(1, -1))
         return self.config.cluster_file[label[0]]
 
-    def record_good_chat(self):
-        pass       # TODO: build a new thread to record conversation whose score is more than 0.99 in interval time
-                   # TODO: by this way we can get a lot of good conversations
+    def record_good_conversations(self, utterance, score_ls, context_ls):
+        def write_conversations():
+            localtime = (time.asctime(time.localtime(time.time()))).replace(' ', '_').replace(':', '-')
+            with open(self.config.path_of_good_conversation+localtime, 'wb') as wfp:
+                pickle.dump(Agent.good_qualified_corpus, wfp)
+            Agent.good_qualified_corpus.clear()
+            # print(Agent.good_qualified_corpus)
+        for index in range(len(score_ls)):
+            if score_ls[index] > self.good_corpus_score:
+                if context_ls[index][0] and context_ls[index][1]:
+                    print((utterance, context_ls[index][1]))
+                    Agent.good_qualified_corpus.add((utterance, context_ls[index][1]))
+        # print(len(Agent.good_qualified_corpus))
+        if len(Agent.good_qualified_corpus) > self.good_corpus_threshold:
+            record_thread = threading.Thread(target=write_conversations)
+            record_thread.start()
 
     def random_chose_index(self, score_ls, max_score):
         max_score_indexes = []
@@ -68,6 +85,13 @@ class Agent:
                 sentence = sentence.replace(special_word, '')
         return sentence
 
+    def response_answer(self, reply_msg, max_score):
+        if type(max_score) is np.ndarray:
+            final_max_score = max_score[0][0]
+        else:
+            final_max_score = max_score
+        return reply_msg, final_max_score
+
     def get_answer(self, utterance, file_name=None):
         try:
             utterance = utterance.rstrip(self.punctuation_str)
@@ -77,7 +101,7 @@ class Agent:
             context_ls = self.retrieval.search_sentences(utterance, self.stop_words)
             if not context_ls:
                 return "", 0
-            utterance = self.remove_special_words(self.stop_words, utterance)
+            utterance_no_stop = self.remove_special_words(self.stop_words, utterance)
             new_context_ls = []
             for each_context in context_ls:
                 ques = self.remove_special_words(self.stop_words, each_context[0])
@@ -86,12 +110,12 @@ class Agent:
                     new_context_ls.append((0, 0))
                     continue
                 new_context_ls.append((ques, ans))
-            print("control!!!!!!!!!!!!!!!!!: {},{}".format(utterance, new_context_ls))
-            print(len(new_context_ls))
-            fuzzy_ratio_ls = fuzzy_matching(utterance, new_context_ls)
+            # print("control!!!!!!!!!!!!!!!!!: {},{}".format(utterance, new_context_ls))
+            # print(len(new_context_ls))
+            fuzzy_ratio_ls = fuzzy_matching(utterance_no_stop, new_context_ls)
 
             self.tf_idf.select_model(file_name)
-            self.tf_idf.predict_tfidf(utterance, new_context_ls)
+            self.tf_idf.predict_tfidf(utterance_no_stop, new_context_ls)
             tf_idf_score_ls = self.tf_idf.calculate_distances()
 
             if fuzzy_ratio_ls.count(max(fuzzy_ratio_ls)) > 1:
@@ -108,26 +132,26 @@ class Agent:
             tfidf_best_content = context_ls[tftdf_best_index][0].rstrip(self.punctuation_str)
             if fuzzy_best_content == utterance or utterance.strip(''.join(config.special_modal_words)) in fuzzy_best_content:
                 best_index = fuzzy_best_index
-                return context_ls[best_index][1], max(fuzzy_ratio_ls)
+                # return context_ls[best_index][1], max(fuzzy_ratio_ls)
+                return self.response_answer(context_ls[best_index][1], max(fuzzy_ratio_ls))
 
             if tfidf_best_content == utterance or utterance.strip(''.join(config.special_modal_words)) in tfidf_best_content:
                 best_index = tftdf_best_index
-                return context_ls[best_index][1], max(tf_idf_score_ls)
+                # return context_ls[best_index][1], max(tf_idf_score_ls)
+                return self.response_answer(context_ls[best_index][1], max(tf_idf_score_ls))
 
             final_score_ls = [(fuzzy_ratio * self.fuzzy_weight + tf_tdf_score * self.tf_idf_weight) for fuzzy_ratio, tf_tdf_score in
                               zip(fuzzy_ratio_ls, tf_idf_score_ls)]
             # TODO: find a suitable weight
+            self.record_good_conversations(utterance, final_score_ls, context_ls)
             max_score = max(final_score_ls)
             if final_score_ls.count(max_score) > 1:
                 best_index = self.random_chose_index(final_score_ls, max_score)
             else:
                 best_index = final_score_ls.index(max_score)
-            print("final result:{}".format(context_ls[best_index]))
-            print(type(max_score))
-            if type(max_score) is np.ndarray:
-                return context_ls[best_index][1], max_score[0][0]
-            else:
-                return context_ls[best_index][1], max_score
+            # print("final result:{}".format(context_ls[best_index]))
+            # print(type(max_score))
+            return self.response_answer(context_ls[best_index][1], max_score)
         except Exception as e:
             return "", 0
 
@@ -152,7 +176,7 @@ class Agent:
         # print(answer + '---' + str(score[0][0]))
         return answer + '---' + str(score)
 
-
+#
 # if __name__ == '__main__':
 #     agent = Agent()
 #     agent.start_cmd()
