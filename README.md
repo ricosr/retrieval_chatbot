@@ -1,7 +1,7 @@
 # retrieval_chatbot
 
 ## 部署:
-* 目录cluster_model, data, index, model, vec_model为存放各类模型数据的目录, 需要从各目录中指定链接下载所需文件放在该目录中
+* 目录cluster_model, data, index, model, vec_model为存放各类模型数据的目录, 需要从各目录README.md中指定的链接下载所需文件放在该目录中
 * 安装依赖库: `pip3 install -r requirements.txt`
 
 ## 启动方法:
