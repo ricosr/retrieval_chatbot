@@ -13,4 +13,5 @@
 * 最好是Linux, Windows上需要安装VS2010+
 
 ## 说明:
+* 如果使用server服务的方式启动，client代码为reterival_client.py，client_example.py为使用示例
 * control.py为各个功能的接口模块，如果不通过server的服务调用，那么可以直接实例化Agent类为agent对象，通过`agent.api("utterance")`，返回回答和评分
