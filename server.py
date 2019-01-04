@@ -1,4 +1,5 @@
-# Note: Remember to ``pip install pyzmq``
+# -*- coding: utf-8 -*-
+
 import gevent
 import zmq.green as zmq
 
@@ -17,7 +18,7 @@ def server():
         msg = socket.recv()
         msg = str(msg, encoding="utf-8")
         reply = agent.socket_get(msg)
-        print("server:{}".format(reply))
+        # print("server:{}".format(reply))
         socket.send_string(reply)  # fixing for recv-send pair
 
 publisher = gevent.spawn(server)

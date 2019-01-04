@@ -60,7 +60,7 @@ class Agent:
         for index in range(len(score_ls)):
             if score_ls[index] > self.good_corpus_score:
                 if context_ls[index][0] and context_ls[index][1]:
-                    print((utterance, context_ls[index][1]))
+                    # print((utterance, context_ls[index][1]))
                     Agent.good_qualified_corpus.add((utterance, context_ls[index][1]))
         # print(len(Agent.good_qualified_corpus))
         if len(Agent.good_qualified_corpus) > self.good_corpus_threshold:
