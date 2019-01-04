@@ -10,13 +10,4 @@
 
 ## 环境要求:
 * Python3
-
-## English:
-* team members: Mo Feiyu, Sun Rui, Wang Zizhe, Edison Liang
-* This is lecture project assessment, please obey opening source spirit, you can refer to it in your homework, but don't plagiarize. 
-* At present, it's just a simple demo, we plan to continue developing it after this semester, if you are interested in it, please leave a message in Issues.
-
-## 中文:
-* 组员: 莫菲雨，孙锐，汪子哲，梁枫
-* 此乃课程作业，请遵守开源精神，可以参考，但不可抄袭
-* 目前只是个demo，我们打算学期结束后继续开发，如果有意交流，请在Issues中留言，谢谢！
+* 最好是Linux, Windows上需要安装VS2010+
