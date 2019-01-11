@@ -1,6 +1,6 @@
 # 检索聊天机器人
 
-## 部署:
+## 部署方法:
 * 目录cluster_model, data, index, model, vec_model为存放各类模型数据的目录, 需要从各目录README.md中指定的链接下载所需文件放在该目录中(不要嵌套目录, 直接拷贝指定共享目录下的所有文件)
 * 安装依赖库: `pip3 install -r requirements.txt`
 
@@ -33,4 +33,4 @@
 
 ## other introduction:
 * if you use the way of server to start it, you can use reterival_client.py as client, client_example.py is an example
-* control.py is the interface module, if you do not use server, you can build a agent object of class Agent, and use the function `agent.api("utterance")` to get answer and score. You also use it through command window by `agent.start_cmd()` 
+* control.py is the interface module, if you do not use server, you can build a agent object of class Agent, and use the function `agent.api("utterance")` to get answer and score. You also can use it through command window by `agent.start_cmd()` 
