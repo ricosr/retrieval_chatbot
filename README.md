@@ -1,7 +1,7 @@
 # 检索聊天机器人
 
 ## 部署方法:
-* 目录cluster_model, data, index, model, vec_model为存放各类模型数据的目录, 需要从各目录README.md中指定的链接下载所需文件放在该目录中(不要嵌套目录, 直接拷贝指定共享目录下的所有文件)
+* 目录cluster_model, data, index, model, vec_model为存放各类模型数据的目录, 需要从各目录README.md中指定的链接下载所需文件放在该目录中(不要嵌套目录, 直接拷贝指定共享目录下的所有文件), 目前都是中文语料
 * 安装依赖库: `pip3 install -r requirements.txt`
 
 ## 启动步骤:
@@ -20,7 +20,7 @@
 # Retrieval_chatbot
 
 ## deploy:
-* folders of cluster_model, data, index, model, vec_model are to save models and data, you should download the necessary files into corresponding folders according to the URL of every README.md in these folders (Do not embed one folder into a local folder, directly put all files from a URL into the local folder) 
+* folders of cluster_model, data, index, model, vec_model are to save models and data, you should download the necessary files into corresponding folders according to the URL of every README.md in these folders (Do not embed one folder into a local folder, directly put all files from a URL into the local folder), the corpus is Chinese temporarily
 * install requirement packages: `pip3 install -r requirements.txt`
 
 ## starting steps:
