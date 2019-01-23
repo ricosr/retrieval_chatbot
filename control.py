@@ -32,8 +32,8 @@ class Agent:
         self.cluster_md = self.config.cluster_model
         self.vec_md = self.config.doc_vector_model
         self.init_all_states()
-        self.fuzzy_weight = 0.15
-        self.tf_idf_weight = 0.85
+        self.fuzzy_weight = 0.2
+        self.tf_idf_weight = 0.8
         self.good_corpus_threshold = 1000
         self.good_corpus_score = 0.99
 
@@ -176,7 +176,7 @@ class Agent:
         # print(answer + '---' + str(score[0][0]))
         return answer + '---' + str(score)
 
-#
+
 # if __name__ == '__main__':
 #     agent = Agent()
 #     agent.start_cmd()
