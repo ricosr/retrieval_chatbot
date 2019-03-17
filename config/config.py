@@ -37,7 +37,7 @@ punctuation_ls = ['`', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_
 stop_words = "stopwords/all_stop.pkl"
 
 special_modal_words = ['啊', '呢', '了', '吧', '吗', '呀', '噻', '哈', '呦', '的', '哎', '我', '你', '他', '今天', '明天',
-                       '昨天', '去', '走',]
+                       '昨天', '去', '走', '这', '那']
 
 path_of_good_conversation = "good_conversations/"
 

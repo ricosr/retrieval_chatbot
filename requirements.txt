@@ -2,9 +2,9 @@ argparse
 fuzzywuzzy
 whoosh
 jieba
-scikit-learn
+scikit-learn==0.20.2
 python-Levenshtein
 nltk
-gensim
+gensim==3.7.0
 numpy
 gevent
