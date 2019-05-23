@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018 by Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 import os
 import pickle
@@ -15,7 +14,7 @@ from tf_idf import TrainTfIdf
 from config import config
 
 
-# pickle file of conversations must exist, config.file_dict and config.index_dict must be right
+# pickle origin_corpus of conversations must exist, config.file_dict and config.index_dict must be right
 def add_index(args):
     build_index = BuildIndex(config)
     build_index.load_pickle(args.f)
@@ -36,9 +35,9 @@ def train_tf_idf(args):
 
 def yml_to_pickle(args):
     if not args.s:
-        file_ls = os.listdir("file/yml")
+        file_ls = os.listdir("origin_corpus/yml")
         for each_file in file_ls:
-            with open("file/yml/{}".format(each_file), 'r', encoding='utf-8') as fp:
+            with open("origin_corpus/yml/{}".format(each_file), 'r', encoding='utf-8') as fp:
                 data = yaml.load(fp)
             if not os.path.exists(args.d[0]):
                 os.mkdir(args.d[0])
@@ -55,7 +54,7 @@ def yml_to_pickle(args):
 
 def conv_to_pickle(args):
     def write_pickle(args, file_name, key):
-        source_file = args.s if key else "file/conv/{}.conv".format(file_name)
+        source_file = args.s if key else "origin_corpus/conv/{}.conv".format(file_name)
         with open("{}".format(source_file), 'r', encoding='utf-8') as fp:
             file_lines = fp.readlines()
         chat_ls = []
@@ -77,7 +76,7 @@ def conv_to_pickle(args):
         with open("{0}/{1}.pkl".format(args.d[0], file_name), 'wb') as fpw:
             pickle.dump(chat_ls, fpw)
     if not args.s:
-        file_ls = os.listdir("file/conv")
+        file_ls = os.listdir("origin_corpus/conv")
         for each_file in file_ls:
             write_pickle(args, each_file.split('.')[0], False)
     else:

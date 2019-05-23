@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018 by Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 import pickle
 import os

@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) by 2018 Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
-
-
 import pickle
 
 import jieba

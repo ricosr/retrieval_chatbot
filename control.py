@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) by 2018 Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
 
 from random import choice
 import pickle
@@ -48,6 +47,7 @@ class Agent:
     def get_utterance_type(self, utterance):
         tmp_vector = self.vec_model.infer_vector(utterance)
         label = self.cluster_model.predict(tmp_vector.reshape(1, -1))
+        print(label)
         return self.config.cluster_file[label[0]]
 
     def record_good_conversations(self, utterance, score_ls, context_ls):
@@ -177,6 +177,6 @@ class Agent:
         return answer + '---' + str(score)
 
 
-# if __name__ == '__main__':
-#     agent = Agent()
-#     agent.start_cmd()
+if __name__ == '__main__':
+    agent = Agent()
+    agent.start_cmd()

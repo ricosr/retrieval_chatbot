@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018 by Sun Rui, Mo Feiyu, Wang Zizhe, Liang Zhixuan
-
 
 cluster_file = {0: "cluster_0", 1: "cluster_1", 2: "cluster_2", 3: "cluster_3", 4: "cluster_4",
                 5: "cluster_5", 6: "cluster_6", 7: "cluster_7", 8: "cluster_8", 9: "cluster_9"

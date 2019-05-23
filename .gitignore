@@ -21,10 +21,10 @@ data/cluster_6.pkl
 data/cluster_7.pkl
 data/cluster_8.pkl
 data/cluster_9.pkl
-file/QGdata.zip
-file/QGdata/
-file/conv/
-file/json/
+origin_corpus/QGdata.zip
+origin_corpus/QGdata/
+origin_corpus/conv/
+origin_corpus/json/
 index/cluster_0/
 index/cluster_1/
 index/cluster_2/
@@ -58,3 +58,5 @@ vec_model/doc_vec
 vec_model/doc_vec.docvecs.vectors_docs.npy
 vec_model/doc_vec.trainables.syn1neg.npy
 vec_model/doc_vec.wv.vectors.npy
+.vscode/
+connect.py
