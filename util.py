@@ -63,14 +63,15 @@ def conv_to_pickle(args):
             if file_lines[i].strip() == "E":
                 continue
             if file_lines[i].split(' ')[0] == 'M':
-                tmp_ls.append(file_lines[i].lstrip('M').strip())
-                if i <= len(file_lines)-1:
-                    if i+1 == len(file_lines):
-                        chat_ls.append(tmp_ls)
-                        break
-                    if file_lines[i+1].strip() == "E":
-                        chat_ls.append(tmp_ls)
-                        tmp_ls = []
+                if file_lines[i].lstrip('M').strip():
+                    tmp_ls.append(file_lines[i].lstrip('M').strip())
+                    if i <= len(file_lines)-1:
+                        if i+1 == len(file_lines):
+                            chat_ls.append(tmp_ls)
+                            break
+                        if file_lines[i+1].strip() == "E":
+                            chat_ls.append(tmp_ls)
+                            tmp_ls = []
         if not os.path.exists(args.d[0]):
             os.mkdir(args.d[0])
         with open("{0}/{1}.pkl".format(args.d[0], file_name), 'wb') as fpw:
@@ -96,6 +97,24 @@ def json_to_pickle(args):   # only be used in this special format corpus of this
         content = each_chat[1][0]
         content = ''.join(content.split(' ')).strip()
         chat_ls.append([utterance, content])
+    if not os.path.exists(args.d[0]):
+        os.mkdir(args.d[0])
+    with open("{0}/{1}.pkl".format(args.d[0], file_name), 'wb') as fpw:
+        pickle.dump(chat_ls, fpw)
+
+
+def divide_bar_to_pickle(args):
+    bar_file = args.s
+    file_name = bar_file.split('/')[-1].split('.')[0]
+    chat_ls = []
+    with open(bar_file, 'r', encoding='utf-8') as fpr:
+        data_line = fpr.readline()
+        while data_line:
+            # print(data_line.split('|')[0].strip())
+            if data_line.split('|')[0].strip():
+                # print(data_line)
+                chat_ls.append([data_line.split('|')[0].strip(), data_line.split('|')[1].strip()])
+            data_line = fpr.readline()
     if not os.path.exists(args.d[0]):
         os.mkdir(args.d[0])
     with open("{0}/{1}.pkl".format(args.d[0], file_name), 'wb') as fpw:
@@ -130,6 +149,7 @@ def combine_pickle(args):
     for each_file in dir_ls:
         with open("{}/{}".format(dir_path, each_file), 'rb') as fp:
             final_ls += pickle.load(fp)
+    print("the count of all data is {}".format(str(len(final_ls))))
     with open("data/{}".format(args.o), 'wb') as fpw:
         pickle.dump(final_ls, fpw)
 
@@ -147,7 +167,7 @@ def create_stop_words_ls():
     with open("stopwords/ZH.txt", 'r', encoding='utf-8')as fpZ:
         ZH_stop = fpZ.readlines()
 
-    all_stop = baidu_stop + HIT_stop + SCU_stop + ZH_stop
+    all_stop = HIT_stop
     new_stop = map(lambda a: a.strip(), all_stop)
     with open("stopwords/all_stop.pkl", 'wb') as fpw:
         pickle.dump(list(set(new_stop)), fpw)

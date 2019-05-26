@@ -21,7 +21,7 @@ model_dict = {"cluster_0": "model/cluster_0.pkl", "cluster_1": "model/cluster_1.
               "cluster_3": "model/cluster_3.pkl", "cluster_4": "model/cluster_4.pkl", "cluster_5": "model/cluster_5.pkl",
               "cluster_6": "model/cluster_6.pkl", "cluster_7": "model/cluster_7.pkl", "cluster_8": "model/cluster_8.pkl",
               "cluster_9": "model/cluster_9.pkl"
-              }
+              }  # tf_idf
 
 cluster_model = "cluster_model/kmeans.pkl"
 

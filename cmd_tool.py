@@ -33,6 +33,13 @@ parser_json.add_argument('-d', metavar='destination folder', type=str, default=[
 parser_json.set_defaults(func=util.json_to_pickle)
 
 
+parser_json = sub_parsers.add_parser('bartopkl', help='convert bar file to pickle file')
+parser_json.add_argument('-s', metavar='source file', type=str, help='mandatory! the bar file you want to convert')
+parser_json.add_argument('-d', metavar='destination folder', type=str, default=["data"], nargs='+',
+                         help='default: data, if assign other folders, change config.py')
+parser_json.set_defaults(func=util.divide_bar_to_pickle)
+
+
 parser_index = sub_parsers.add_parser('index', help='add indexes')
 parser_index.add_argument('-f', metavar='file name', type=str,
                           help='default: None, if no assign the value, build indexes for all data files')
