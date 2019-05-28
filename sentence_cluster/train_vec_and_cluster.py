@@ -49,12 +49,28 @@ def train_cluster(data_lines, model, num_clusters, model_file):
 
 
 def train_cluster2(data_lines, bc, num_clusters, model_file):
-    km = MiniBatchKMeans(n_clusters=num_clusters)
-    infered_vectors_list = bc.encode(data_lines)
-    write_pickle_file("tmp_vec_data.pkl", infered_vectors_list)
-    result = km.fit_predict(infered_vectors_list)
-    joblib.dump(km, model_file)
-    return result
+    # km = MiniBatchKMeans(n_clusters=num_clusters)
+    batch_num = 10
+    batch_size = len(data_lines) // batch_num
+    batch_size_ls = [batch_size] * batch_num
+    if batch_size * batch_num < len(data_lines):
+        batch_size_ls.append(len(data_lines) - batch_num * batch_size)
+        batch_num += 1
+    print("total size:{}".format(len(data_lines)))
+    print("batch size:{}".format(str(batch_size_ls)))
+    print("batch num:{}".format(batch_num))
+    start = 0
+    end = batch_size_ls[0]
+    batch_size_ls.pop(0)
+    for i in range(batch_num):
+        infered_vectors_list = bc.encode(data_lines[start: end])
+        write_pickle_file("vec_data/vec_data_{}_{}.pkl".format(str(start), str(end)), infered_vectors_list)
+        if i < batch_num - 1:
+            start = end
+            end += batch_size_ls[i]
+    # result = km.fit_predict(infered_vectors_list)
+    # joblib.dump(km, model_file)
+    # return result
 
 
 def write_doc_cluster(num_clusters, cluster_result, data_lines, out_put_dir):
@@ -101,8 +117,8 @@ if __name__ == '__main__':
         answers_ls.append(each_uttr[0])
 
     bc = BertClient()
-    cluster_result = train_cluster2(answers_ls, bc, 5, "kmeans.pkl")
-    write_doc_cluster(5, cluster_result, data_lines, "cluster_result")
+    train_cluster2(answers_ls, bc, 5, "kmeans.pkl")
+    # write_doc_cluster(5, cluster_result, data_lines, "cluster_result")
     # bert-serving-start -model_dir chinese_L-12_H-768_A-12 -num_worker=1
 
     # km = joblib.load("data/kmeans.pkl")
