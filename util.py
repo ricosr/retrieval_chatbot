@@ -8,6 +8,7 @@ import json
 
 import jieba.posseg as pseg
 import nltk
+import numpy as np
 
 from retrieval_documents import BuildIndex
 from tf_idf import TrainTfIdf
@@ -152,6 +153,21 @@ def combine_pickle(args):
     print("the count of all data is {}".format(str(len(final_ls))))
     with open("data/{}".format(args.o), 'wb') as fpw:
         pickle.dump(final_ls, fpw)
+
+
+def combine_array(args):
+    dir_path = args.p
+    dir_ls = os.listdir(dir_path)
+    tmp_array = None
+    for each_file in dir_ls:
+        with open("{}/{}".format(dir_path, each_file), 'rb') as fpr:
+            if type(tmp_array) is not np.ndarray:
+                tmp_array = pickle.load(fpr)
+            else:
+                tmp_array = np.concatenate((tmp_array, pickle.load(fpr)), axis=0)
+    print("the count of all data is {}".format(str(len(tmp_array))))
+    with open("sentence_cluster/vec_data/{}".format(args.o), 'wb') as fpw:
+        pickle.dump(tmp_array, fpw)
 
 
 def create_stop_words_ls():

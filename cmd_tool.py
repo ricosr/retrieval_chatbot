@@ -58,5 +58,11 @@ parser_concat_pkl.add_argument('-o', metavar='pickles file name', type=str, help
 parser_concat_pkl.set_defaults(func=util.combine_pickle)
 
 
+parser_concat_pkl = sub_parsers.add_parser('catarr', help='concat array pickle files')
+parser_concat_pkl.add_argument('-p', metavar='pickles array file path', type=str, help='mandatory! the path of pickle array files')
+parser_concat_pkl.add_argument('-o', metavar='new pickles file name', type=str, help='mandatory! the path of out pickle array files')
+parser_concat_pkl.set_defaults(func=util.combine_array)
+
+
 args = parser.parse_args()
 args.func(args)

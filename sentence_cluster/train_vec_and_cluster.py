@@ -48,9 +48,8 @@ def train_cluster(data_lines, model, num_clusters, model_file):
     return result
 
 
-def train_cluster2(data_lines, bc, num_clusters, model_file):
+def get_bert_doc_vec(data_lines, bc, batch_num):
     # km = MiniBatchKMeans(n_clusters=num_clusters)
-    batch_num = 10
     batch_size = len(data_lines) // batch_num
     batch_size_ls = [batch_size] * batch_num
     if batch_size * batch_num < len(data_lines):
@@ -68,9 +67,13 @@ def train_cluster2(data_lines, bc, num_clusters, model_file):
         if i < batch_num - 1:
             start = end
             end += batch_size_ls[i]
-    # result = km.fit_predict(infered_vectors_list)
-    # joblib.dump(km, model_file)
-    # return result
+
+
+def train_cluster2(infered_vectors_list, num_clusters, model_file):
+    km = KMeans(n_clusters=num_clusters)
+    result = km.fit_predict(infered_vectors_list)
+    joblib.dump(km, model_file)
+    return result
 
 
 def write_doc_cluster(num_clusters, cluster_result, data_lines, out_put_dir):
@@ -94,7 +97,9 @@ if __name__ == '__main__':
     # cluster_result = train_cluster(data_lines, model, 10, "../cluster_model/kmeans.pkl")
     # write_doc_cluster(10, cluster_result, data_lines, "cluster_result")
 
+    # #############################step 1############################
     data_lines = read_pickle_file("data/all_data.pkl")
+    # ###############################################################
 
     # cut_words_write(data_lines, 'output.seq')
     # model = train_vec_model('output.seq', 200, 4, "doc_vec")
@@ -110,16 +115,24 @@ if __name__ == '__main__':
     # cluster_result = train_cluster(data_lines, model, 10, "kmeans.pkl")
     # write_doc_cluster(5, cluster_result, data_lines, "cluster_result")
 
-    answers_ls = []
-    for each_uttr in data_lines:
-        if not each_uttr[0]:
-            print(each_uttr)
-        answers_ls.append(each_uttr[0])
+    # #############################step 2############################
+    # answers_ls = []
+    # for each_uttr in data_lines:
+    #     if not each_uttr[0]:
+    #         print(each_uttr)
+    #     answers_ls.append(each_uttr[0])
+    #
+    # bc = BertClient()
+    # get_bert_doc_vec(answers_ls, bc, 10)
 
-    bc = BertClient()
-    train_cluster2(answers_ls, bc, 5, "kmeans.pkl")
     # write_doc_cluster(5, cluster_result, data_lines, "cluster_result")
     # bert-serving-start -model_dir chinese_L-12_H-768_A-12 -num_worker=1
+    # ###############################################################
+
+
+    cluster_result = train_cluster2(read_pickle_file("vec_data/all_vectors.pkl"), 3, "../cluster_model/kmeans.pkl")
+    write_doc_cluster(3, cluster_result, data_lines, "cluster_result")
+
 
     # km = joblib.load("data/kmeans.pkl")
     # infered_vectors_list = []
