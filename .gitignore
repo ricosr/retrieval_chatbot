@@ -52,7 +52,6 @@ sentence_cluster/data/
 sentence_cluster/floyd.yml
 sentence_cluster/floyd_requirements.txt
 stopwords-master.zip
-stopwords/
 test_gevent.py
 vec_model/doc_vec
 vec_model/doc_vec.docvecs.vectors_docs.npy
