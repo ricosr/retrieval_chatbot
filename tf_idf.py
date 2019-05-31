@@ -36,9 +36,9 @@ class TfIdf:
             if each_context == (0, 0):
                 continue
             self.vector_context_ls.append(self.current_model.transform(
-                [self.parse_cn_to_en_format(each_context[0]) + self.parse_cn_to_en_format(each_context[1])]))
+                [self.word_segment(each_context[0]) + self.word_segment(each_context[1])]))
             self.vector_utterrance_ls.append(self.current_model.transform(
-                [self.parse_cn_to_en_format(utterances) + self.parse_cn_to_en_format(each_context[1])]))
+                [self.word_segment(utterances) + self.word_segment(each_context[1])]))
 
     def calculate_distances(self):
         result_ls = []
@@ -54,7 +54,7 @@ class TfIdf:
         y = y.reshape(1, -1)
         return cosine_similarity(x, y)
 
-    def parse_cn_to_en_format(self, chinese_characters):
+    def word_segment(self, chinese_characters):
         seg_list = [each_word for each_word in jieba.cut(chinese_characters, cut_all=False)]
         return " ".join(seg_list)
 
@@ -70,6 +70,7 @@ class TrainTfIdf:
     def __init__(self, config):
         self.config = config
         self.files_dict = {}
+        self.load_stop_words(self.config)
 
     def load_pickle(self, file=None):
         if file:
@@ -80,16 +81,33 @@ class TrainTfIdf:
                 with open(path, 'rb') as fp:
                     self.files_dict[file_name] = pickle.load(fp)
 
-    def parse_cn_to_en_format(self, chinese_characters):
+    def word_segment(self, chinese_characters):
         seg_list = [each_word for each_word in jieba.cut(chinese_characters, cut_all=False)]
         return " ".join(seg_list)
+
+    def load_stop_words(self, config):
+        with open(config.stop_words, 'rb') as fpr:
+            self.stop_words = pickle.load(fpr)
+
+    # def remove_stop_words(self, cut_words):
+    #     cut_words_ls = cut_words.split(' ')
+    #     for i in range(len(cut_words_ls)):
+    #         if cut_words_ls[i] in self.stop_words:
+    #             cut_words_ls[i] = 0
+    #     while True:
+    #         if 0 in cut_words_ls:
+    #             cut_words_ls.remove(0)
+    #         else:
+    #             break
+    #     return ' '.join(cut_words_ls)
 
     def train(self):
         if not os.path.exists("model"):
             os.mkdir("model")
-        for file_name, content in self.files_dict.items():  # content:[[question], [answer]]
-            tmp_content = map(lambda each_chat: map(self.parse_cn_to_en_format, each_chat), content)
-            content_str_ls = [''.join(list(each_chat)) for each_chat in tmp_content]
-            vectorizer = TfidfVectorizer()
+        for file_name, content in self.files_dict.items():  # content:[[question, answer]]
+            tmp_content = map(lambda each_chat: map(self.word_segment, each_chat), content)
+            content_str_ls = [' '.join(list(each_chat)) for each_chat in tmp_content]
+            # no_stop_content_ls = list(map(self.remove_stop_words, content_str_ls))
+            vectorizer = TfidfVectorizer(stop_words=self.stop_words)
             vectorizer.fit_transform(content_str_ls)
             joblib.dump(vectorizer, 'model/{}.pkl'.format(file_name))

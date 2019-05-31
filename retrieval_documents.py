@@ -208,11 +208,12 @@ class BuildIndex:
             tmp_index = create_in(index_path, schema)
             writer = tmp_index.writer()
             for i in range(len(content)):
-                writer.add_document(
-                    title=content[i][1].strip(),
-                    path="/{}".format(str(i)),
-                    content=content[i][0].strip()
-                )
+                if len(content[i]) == 2:
+                    writer.add_document(
+                        title=content[i][1].strip(),
+                        path="/{}".format(str(i)),
+                        content=content[i][0].strip()
+                    )
             writer.commit()
 
     def build_domains_index(self):

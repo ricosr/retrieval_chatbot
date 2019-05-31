@@ -10,6 +10,7 @@ import jieba
 from gensim.models.doc2vec import Doc2Vec, LabeledSentence
 from sklearn.externals import joblib
 import numpy as np
+from bert_serving.client import BertClient
 
 from retrieval_documents import Retrieval
 from fuzzy_match import fuzzy_matching
@@ -29,26 +30,30 @@ class Agent:
         self.punctuation_str = ''.join(self.config.punctuation_ls)
         self.frequency_domain_dict = frequency_domain.frequency_dict
         self.cluster_md = self.config.cluster_model
-        self.vec_md = self.config.doc_vector_model
+        # self.vec_md = self.config.doc_vector_model
         self.init_all_states()
         self.fuzzy_weight = 0.2
         self.tf_idf_weight = 0.8
-        self.good_corpus_threshold = 1000
-        self.good_corpus_score = 0.99
+        self.good_corpus_threshold = 200
+        self.good_corpus_score = 0.95
 
     def init_all_states(self):
         self.retrieval = Retrieval(num_ir=NUM_OF_IR, config=self.config)
         self.tf_idf = TfIdf(self.config)
         self.cluster_model = joblib.load(self.cluster_md)
-        self.vec_model = Doc2Vec.load(self.vec_md)
+        # self.vec_model = Doc2Vec.load(self.vec_md)
+        # self.vec_model = BertClient()
         self.load_stop_words(self.config)
         jieba.initialize()
 
     def get_utterance_type(self, utterance):
-        tmp_vector = self.vec_model.infer_vector(utterance)
-        label = self.cluster_model.predict(tmp_vector.reshape(1, -1))
-        print(label)
-        return self.config.cluster_file[label[0]]
+        # tmp_vector = self.vec_model.infer_vector(utterance)
+
+        # tmp_vector = self.vec_model.encode([utterance])
+        # label = self.cluster_model.predict(tmp_vector)
+        # print(label)
+        # return self.config.cluster_file[label[0]]
+        return self.config.cluster_file[0]
 
     def record_good_conversations(self, utterance, score_ls, context_ls):
         def write_conversations():
