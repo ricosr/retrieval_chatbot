@@ -77,17 +77,25 @@ def train_cluster2(infered_vectors_list, num_clusters, model_file):
 
 
 def write_doc_cluster(num_clusters, cluster_result, data_lines, out_put_dir):
+    one_count = 0
     for i in range(num_clusters):
         cluster_file_name = "{}/cluster_{}.pkl".format(out_put_dir, str(i))
         # cluster_file_name = "cluster_{}.pkl".format(str(i))
         tmp_doc_cluster_ls = []
         with open(cluster_file_name, 'wb') as pfw:
             for line_number, each_line in enumerate(data_lines):
+                # print(each_line)
                 if line_number >= len(cluster_result):
                     break
                 if cluster_result[line_number] == i:
-                    tmp_doc_cluster_ls.append([each_line[0], each_line[1]])
+                    if len(each_line) == 2:
+                        tmp_doc_cluster_ls.append([each_line[0], each_line[1]])
+                    if len(each_line) == 1:
+                        tmp_doc_cluster_ls.append([each_line[0], each_line[0]])
+                        one_count += 1
+
             pickle.dump(tmp_doc_cluster_ls, pfw)
+    print(one_count)
 
 
 if __name__ == '__main__':
@@ -125,20 +133,20 @@ if __name__ == '__main__':
     # bc = BertClient()
     # get_bert_doc_vec(answers_ls, bc, 10)
 
-    # write_doc_cluster(5, cluster_result, data_lines, "cluster_result")
     # bert-serving-start -model_dir chinese_L-12_H-768_A-12 -num_worker=1
     # ###############################################################
 
 
     cluster_result = train_cluster2(read_pickle_file("vec_data/all_vectors.pkl"), 3, "../cluster_model/kmeans.pkl")
+    write_pickle_file("cluster_tmp_result.pkl", cluster_result)
     write_doc_cluster(3, cluster_result, data_lines, "cluster_result")
 
 
-    # km = joblib.load("data/kmeans.pkl")
-    # infered_vectors_list = []
-    # for text in data_lines:
-    #     vector = model.infer_vector(text[0] + text[1])
-    #     infered_vectors_list.append(vector)
-    # result = km.fit_predict(infered_vectors_list)
-    # write_doc_cluster(10, result, data_lines, "cluster_result")
+    # km = joblib.load("../cluster_model/kmeans.pkl")
+    # # infered_vectors_list = []
+    # # for text in data_lines:
+    # #     vector = model.infer_vector(text[0] + text[1])
+    # #     infered_vectors_list.append(vector)
+    # result = km.fit_predict(read_pickle_file("vec_data/all_vectors.pkl"))
+    # write_doc_cluster(3, result, data_lines, "cluster_result")
 
