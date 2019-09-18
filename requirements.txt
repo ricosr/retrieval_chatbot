@@ -8,3 +8,4 @@ nltk
 gensim==3.7.0
 numpy
 gevent
+bert-serving-client
